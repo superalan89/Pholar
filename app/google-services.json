@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "277221069355",
+    "firebase_url": "https://pholar-f5bf3.firebaseio.com",
+    "project_id": "pholar-f5bf3",
+    "storage_bucket": "pholar-f5bf3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277221069355:android:c479a29d17dc28e4",
+        "android_client_info": {
+          "package_name": "com.hooooong.pholar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277221069355-ba7r7b0k5jrg2lh4btstgob8bfoauio7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hooooong.pholar",
+            "certificate_hash": "33cd6b9a26aaf9e689a4d049107311a1a16c206b"
+          }
+        },
+        {
+          "client_id": "277221069355-0bfmo5657h8vv1i571qftjh3m05jc25e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Hb1R3CrZETlTbp-YoW4xBwBLIUA_mys"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277221069355-0bfmo5657h8vv1i571qftjh3m05jc25e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
