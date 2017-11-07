@@ -36,23 +36,34 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .add(R.id.frameLayout, new com.hooooong.pholar.view.home.ListFragment())
+                            .add(R.id.frameLayout, new ListFragment())
                             .commit();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_search:
                     getSupportFragmentManager()
                             .beginTransaction()
                             .add(R.id.frameLayout, new SearchFragment())
                             .commit();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_write:
                     Intent intent = new Intent(HomeActivity.this, GalleryActivity.class);
                     startActivity(intent);
+                    return true;
+                case R.id.navigation_notification:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.frameLayout, new NotiFragment())
+                            .commit();
+                    return true;
+                case R.id.navigation_mypage:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.frameLayout, new MypageFragment())
+                            .commit();
                     return true;
             }
             return false;
         }
     };
-
 
 }

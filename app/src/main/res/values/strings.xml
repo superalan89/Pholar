@@ -5,5 +5,14 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="list_fragment">list_fragment</string>
+    <string name="search_fragment">search_fragment</string>
+    <string name="write_fragment">write_fragment</string>
+    <string name="noti_fragment">noti_fragment</string>
+    <string name="mypage_fragment">mypage_fragment</string>
+    <string name="list_fragment_add_friend_ment">소셜 포토 다이어리 폴라\n감각적인 친구를 팔로잉하고 좋은 사진을 받아보세요.</string>
     <string name="title_gallery">PhotoChoose</string>
+
 </resources>
