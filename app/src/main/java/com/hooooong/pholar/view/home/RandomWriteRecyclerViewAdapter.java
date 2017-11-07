@@ -22,6 +22,7 @@ public class RandomWriteRecyclerViewAdapter extends RecyclerView.Adapter<RandomW
         notifyDataSetChanged();
     }
 
+
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
