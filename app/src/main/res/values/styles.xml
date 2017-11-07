@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/colorBlack</item>
     </style>
 
+    <!-- Home Theme 설정 -->
     <style name="HomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/colorWhite</item>
@@ -19,9 +20,8 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-
+    <!-- Sign Theme 설정 -->
     <style name="SignTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/colorWhite</item>
         <item name="colorPrimary">@color/colorWhite</item>
@@ -30,6 +30,10 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/colorWhite</item>
     </style>
 
 </resources>
