@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "277221069355-n1ttkl2ans16ph76p8o13tfm3tgg7f9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hooooong.pholar",
+            "certificate_hash": "57e831e12881fe9f253c529e834f10eca9e57063"
+          }
+        },
+        {
           "client_id": "277221069355-ba7r7b0k5jrg2lh4btstgob8bfoauio7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
