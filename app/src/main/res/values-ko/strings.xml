@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">폴라</string>
+
+    <string name="title_gallery">사진선택</string>
 </resources>
