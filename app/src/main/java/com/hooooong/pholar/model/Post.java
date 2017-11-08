@@ -14,9 +14,9 @@ public class Post {
     public String comtent;
     public String writer;
     private List<String> tag;
-    public List<Photo> photo;
-    public List<Comment> comment;
-    public List<Like> like;
+    public List<Photo> photo1;
+    public List<Comment> comment1;
+    public List<Like> like1;
 
     @Override
     public String toString() {
@@ -26,9 +26,9 @@ public class Post {
                 ", comtent='" + comtent + '\'' +
                 ", writeer='" + writer + '\'' +
 //                ", tag=" + tag +
-                ", photo=" + photo +
-                ", comment=" + comment +
-                ", like=" + like +
+                ", photo=" + photo1 +
+                ", comment=" + comment1 +
+                ", like=" + like1 +
                 '}';
     }
 }
