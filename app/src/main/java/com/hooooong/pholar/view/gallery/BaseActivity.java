@@ -1,5 +1,6 @@
 package com.hooooong.pholar.view.gallery;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +15,9 @@ import java.util.List;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private static final int REQ_CODE = 999;
-    private static String permissions[];
+    private static String permissions[] = {
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     public abstract void init();
 

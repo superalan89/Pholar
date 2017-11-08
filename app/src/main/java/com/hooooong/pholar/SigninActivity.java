@@ -59,7 +59,7 @@ public class SigninActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        SignInButton button = (SignInButton) findViewById(R.id.btn_LoginGoogle);
+        SignInButton button = (SignInButton) findViewById(R.id.btnLoginGoogle);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +67,7 @@ public class SigninActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-        //btn_LoginGoogle
+        //btnLoginGoogle
     }
 
     @Override
@@ -85,6 +85,7 @@ public class SigninActivity extends AppCompatActivity {
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
+                Toast.makeText(SigninActivity.this, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -96,8 +97,8 @@ public class SigninActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(SigninActivity.this, "로그인", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
+                            Toast.makeText(SigninActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
                             SigninActivity.this.startActivity(intent);
                         }
                     }
