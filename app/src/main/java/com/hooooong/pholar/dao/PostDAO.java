@@ -1,5 +1,6 @@
 package com.hooooong.pholar.dao;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -8,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.hooooong.pholar.MainActivity;
 import com.hooooong.pholar.model.Post;
 
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class PostDAO {
         return tmp;
     }
 
-    public List<Post> read() {
+    public void read(final ICallback callback) {
         final List<Post> data = new ArrayList<>();
 
         Query getTopNewPost = postRef.limitToFirst(DEFAULT_GET_NEWPOST);
@@ -60,9 +62,31 @@ public class PostDAO {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post item = snapshot.getValue(Post.class);
                     data.add(item);
-                    Log.d(TAG, "onDataChange: " + item.toString());
+                    Log.d(TAG, "read: " + item.toString());
                 }
 
+                callback.getPostFromFirebaseDB(data);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void readByPostId (final ICallback callback, String post_id) {
+
+        Query getSinglePost = postRef.child(post_id);
+
+        getSinglePost.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Post item = dataSnapshot.getValue(Post.class);
+                    callback.getSinglePostFromFirebaseDB(item);
+                    Log.d(TAG, "readByPostId: " + item.toString());
+                }
             }
 
             @Override
@@ -71,6 +95,11 @@ public class PostDAO {
             }
         });
 
-        return data;
+    }
+
+    // Firebase에서 Read한 결과를 리턴해주는 Interface
+    public interface ICallback {
+        void getPostFromFirebaseDB (List<Post> data);
+        void getSinglePostFromFirebaseDB (Post item);
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Android Hong on 2017-11-06.
  */
 
-public class SearchFragment extends android.support.v4.app.Fragment {
+public class SearchFragment extends android.support.v4.app.Fragment implements PostDAO.ICallback {
     private final String TAG = getClass().getSimpleName();
 
     private PostDAO postDAO;
@@ -35,10 +35,19 @@ public class SearchFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         init();
-        getPostFromFirebaseDB();
+
+
+        initDataFromFirebaseDB();
+
+        // 테스트: post_id로 검색
+        getSinglePostFromFirebaseDB("post_adfewerwer");
 
         Toast.makeText(view.getContext(), "Test", Toast.LENGTH_SHORT).show();
         return view;
+    }
+
+    public void getSinglePostFromFirebaseDB(String post_id) {
+        postDAO.readByPostId(this, post_id);
     }
 
     private void init() {
@@ -46,12 +55,23 @@ public class SearchFragment extends android.support.v4.app.Fragment {
     }
 
 
-    private void getPostFromFirebaseDB() {
-        List<Post> data = postDAO.read();
+    private void initDataFromFirebaseDB() {
+        postDAO.read(this);
 
-        Log.e("heepie", data + "");
+    }
+
+    @Override
+    public void getPostFromFirebaseDB(List<Post> data) {
+        // Screen에 반영
+
         for (Post item : data) {
             Log.d(TAG, "getPostFromFirebaseDB: " + item.toString());
         }
+    }
+
+    @Override
+    public void getSinglePostFromFirebaseDB(Post item) {
+        // Screen에 반영
+        Log.e(TAG, "Single getPostFromFirebaseDB: " + item.toString());
     }
 }
