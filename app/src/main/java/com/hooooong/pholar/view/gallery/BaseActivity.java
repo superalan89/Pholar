@@ -41,9 +41,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void checkPermission() {
         // 1. 권한 유무 확인
-        // 호환성 처리를 수동으로 해줘야 한다.
-        // checkSelfPermission(Permission String)
-        // RETURN : Integer (PackageManager.PERMISSION_GRANTED , PackageManager.PERMISSION_DENIED)
         List<String> requires = new ArrayList<>();
         for (String permission : permissions) {
             if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
@@ -59,20 +56,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             init();
         }
-
-        /*
-        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            // 1-1. 이미 승인이 되어 있는 경우
-            // 초기화 실행
-            init();
-        }else{
-            // 1-2. 권한이 승인이 되지 않으면
-            // 2. 권한 승인
-            // 2-1. 요청할 권한을 정의
-            // 2-2. 권한 요청
-            requestPermissions(permissions, REQ_CODE);
-        }*/
     }
 
     @Override

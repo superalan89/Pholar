@@ -1,15 +1,17 @@
 package com.hooooong.pholar.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Android Hong on 2017-11-07.
  */
 
-public class PhotoVO {
+public class Photo implements Serializable{
 
     private String imgPath;
     private String thumPath;
 
-    public PhotoVO(String imgPath, String thumPath) {
+    public Photo(String imgPath, String thumPath) {
         this.imgPath = imgPath;
         this.thumPath = thumPath;
     }
@@ -28,5 +30,12 @@ public class PhotoVO {
 
     public void setThumPath(String thumPath) {
         this.thumPath = thumPath;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Photo))
+            return false;
+        return  imgPath.equals(((Photo)obj).getImgPath()) ;
     }
 }
