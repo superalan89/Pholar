@@ -4,12 +4,15 @@ package com.hooooong.pholar.model;
  * Created by Android Hong on 2017-11-07.
  */
 
-public class PhotoVO {
+public class Photo {
+    public String photo_id;
+    public String explain;
+    public String storage_path;
 
-    private String imgPath;
-    private String thumPath;
+    public String imgPath;
+    public String thumPath;
 
-    public PhotoVO(String imgPath, String thumPath) {
+    public Photo(String imgPath, String thumPath) {
         this.imgPath = imgPath;
         this.thumPath = thumPath;
     }

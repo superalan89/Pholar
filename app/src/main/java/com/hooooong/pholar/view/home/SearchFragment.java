@@ -1,17 +1,26 @@
 package com.hooooong.pholar.view.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hooooong.pholar.R;
+import com.hooooong.pholar.dao.PostDAO;
+import com.hooooong.pholar.model.Post;
+
+import java.util.List;
 
 /**
  * Created by Android Hong on 2017-11-06.
  */
 
 public class SearchFragment extends android.support.v4.app.Fragment {
+    private final String TAG = getClass().getSimpleName();
+
+    private PostDAO postDAO;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -23,6 +32,26 @@ public class SearchFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        init();
+        getPostFromFirebaseDB();
+
+        Toast.makeText(view.getContext(), "Test", Toast.LENGTH_SHORT).show();
+        return view;
+    }
+
+    private void init() {
+        postDAO = PostDAO.getInstance();
+    }
+
+
+    private void getPostFromFirebaseDB() {
+        List<Post> data = postDAO.read();
+
+        Log.e("heepie", data + "");
+        for (Post item : data) {
+            Log.d(TAG, "getPostFromFirebaseDB: " + item.toString());
+        }
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hooooong.pholar.R;
-import com.hooooong.pholar.model.PhotoVO;
+import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.view.gallery.listener.PhotoClickListener;
 
 import java.util.ArrayList;
@@ -23,8 +23,8 @@ import java.util.List;
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoViewHolder> {
 
     private Context context;
-    private List<PhotoVO> photoList = new ArrayList<>();
-    private List<PhotoVO> selectPhotoList;
+    private List<Photo> photoList = new ArrayList<>();
+    private List<Photo> selectPhotoList;
     private PhotoClickListener onItemClickListener;
 
     /**
@@ -32,7 +32,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
      *
      * @return
      */
-    public List<PhotoVO> getPhotoList() {
+    public List<Photo> getPhotoList() {
         return photoList;
     }
 
@@ -41,7 +41,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
      *
      * @return
      */
-    public List<PhotoVO> getSelectPhotoList() {
+    public List<Photo> getSelectPhotoList() {
         return selectPhotoList;
     }
 
@@ -49,20 +49,20 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
     /**
      * 선택한 Photo 지우기
      *
-     * @param photoVO
+     * @param photo
      */
-    public void removeSelectPhotoList(PhotoVO photoVO) {
-        selectPhotoList.remove(photoVO);
+    public void removeSelectPhotoList(Photo photo) {
+        selectPhotoList.remove(photo);
         notifyDataSetChanged();
     }
 
     /**
      * 선택한 Photo 추가하기
      *
-     * @param photoVO
+     * @param photo
      */
-    public void addSelectPhotoList(PhotoVO photoVO) {
-        selectPhotoList.add(photoVO);
+    public void addSelectPhotoList(Photo photo) {
+        selectPhotoList.add(photo);
         notifyDataSetChanged();
     }
 
@@ -77,7 +77,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
         this.onItemClickListener = (PhotoClickListener) context;
     }
 
-    public void setPhotoList(List<PhotoVO> photoList) {
+    public void setPhotoList(List<Photo> photoList) {
         this.photoList = photoList;
         notifyDataSetChanged();
     }
@@ -105,13 +105,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
      */
     @Override
     public void onBindViewHolder(final PhotoViewHolder viewHolder, final int position) {
-        final PhotoVO photoVO = photoList.get(position);
+        final Photo photo = photoList.get(position);
 
-        viewHolder.setImageView(photoVO.getImgPath());
+        viewHolder.setImageView(photo.getImgPath());
 
-        if (selectPhotoList.contains(photoVO)) {
+        if (selectPhotoList.contains(photo)) {
             viewHolder.setLayout(View.VISIBLE);
-            viewHolder.setTextNumber(selectPhotoList.indexOf(photoVO) + 1);
+            viewHolder.setTextNumber(selectPhotoList.indexOf(photo) + 1);
         } else {
             viewHolder.setLayout(View.INVISIBLE);
         }
