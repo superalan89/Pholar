@@ -82,6 +82,11 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
     public void getSinglePostFromFirebaseDB(Post item) {
         // Screen에 반영
         Log.e(TAG, "Single getPostFromFirebaseDB: " + item.toString());
+
+        // For Test
+        Log.d("heepie", item.getPhotoList().get(0).toString());
+        Log.d("heepie", item.getCommentList().get(0).toString());
+        Log.d("heepie", item.getLikeList().get(0).toString());
     }
 
     @Override

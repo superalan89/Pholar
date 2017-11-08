@@ -1,6 +1,7 @@
 package com.hooooong.pholar.model;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
@@ -12,7 +13,7 @@ public class User {
     public String status_msg;
     public String phone_number;
     public String profile_path;
-    public List<PostThumbnail> post_thumbnail;
+    public Map<String, Map<String, String>> post_thumbnail;
 
     @Override
     public String toString() {
@@ -22,7 +23,6 @@ public class User {
                 ", status_msg='" + status_msg + '\'' +
                 ", phone_number='" + phone_number + '\'' +
                 ", profile_path='" + profile_path + '\'' +
-                ", post_thumbnail=" + post_thumbnail +
                 '}';
     }
 }

@@ -6,11 +6,13 @@ package com.hooooong.pholar.model;
 
 public class Photo {
     public String photo_id;
-    public String explain;
+    public String photo_explain;
     public String storage_path;
 
     public String imgPath;
     public String thumPath;
+
+    public Photo() { }
 
     public Photo(String imgPath, String thumPath) {
         this.imgPath = imgPath;
@@ -31,5 +33,16 @@ public class Photo {
 
     public void setThumPath(String thumPath) {
         this.thumPath = thumPath;
+    }
+
+    @Override
+    public String toString() {
+        return "Photo{" +
+                "photo_id='" + photo_id + '\'' +
+                ", photo_explain='" + photo_explain + '\'' +
+                ", storage_path='" + storage_path + '\'' +
+                ", imgPath='" + imgPath + '\'' +
+                ", thumPath='" + thumPath + '\'' +
+                '}';
     }
 }

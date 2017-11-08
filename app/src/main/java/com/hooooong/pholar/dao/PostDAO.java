@@ -1,6 +1,5 @@
 package com.hooooong.pholar.dao;
 
-import android.content.Intent;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -9,11 +8,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.hooooong.pholar.MainActivity;
+import com.google.gson.Gson;
+import com.hooooong.pholar.model.Comment;
+import com.hooooong.pholar.model.Like;
+import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
@@ -62,7 +70,7 @@ public class PostDAO {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post item = snapshot.getValue(Post.class);
                     data.add(item);
-                    Log.d(TAG, "read: " + item.toString());
+                    Log.d(TAG, "read: " + item);
                 }
 
                 callback.getPostFromFirebaseDB(data);
@@ -84,8 +92,24 @@ public class PostDAO {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Post item = dataSnapshot.getValue(Post.class);
-                    callback.getSinglePostFromFirebaseDB(item);
+//                    callback.getSinglePostFromFirebaseDB(item);
+
                     Log.d(TAG, "readByPostId: " + item.toString());
+
+                    // For Test
+                    List<Photo> photoList = getNestedClass(item.photo, Photo.class);
+                    List<Comment> commentList = getNestedClass(item.comment, Comment.class);
+                    List<Like> likeList = getNestedClass(item.like, Like.class);
+
+//                    Log.d("heepie", photoList.get(0).toString());
+//                    Log.d("heepie", commentList.get(0).toString());
+//                    Log.d("heepie", likeList.get(0).toString());
+
+                    item.setPhotoList(photoList);
+                    item.setCommentList(commentList);
+                    item.setLikeList(likeList);
+
+                    callback.getSinglePostFromFirebaseDB(item);
                 }
             }
 
@@ -94,8 +118,55 @@ public class PostDAO {
 
             }
         });
-
     }
+
+    // Firebase Object -> Json -> Java Object
+    private <U> List<U> getNestedClass(Map<String, Map<String, String>> target, Class<U> CLASS) {
+        List<U> ret = new ArrayList<>();
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        Gson gson = new Gson();
+        JSONObject jsonObject;
+
+        Iterator<String> ids = target.keySet().iterator();
+
+        while(ids.hasNext()) {
+            String id = ids.next();
+            Map<String, String> map2 = target.get(id);
+            Iterator<String> keys = map2.keySet().iterator();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                Log.e(TAG, "\t\tKey: " + key + " Value: " + map2.get(key));
+                hashMap.put(key, map2.get(key));
+            }
+
+            jsonObject = getJsonStringFromMap(hashMap);
+            Log.d("heepie", jsonObject.toString());
+            ret.add(gson.fromJson(jsonObject.toString(), CLASS));
+
+        }
+
+        return ret;
+    }
+
+    public JSONObject getJsonStringFromMap(Map<String, String> hashMap) {
+
+        JSONObject json = new JSONObject();
+        for( Map.Entry<String, String> entry : hashMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            try {
+                json.put(key, value);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return json;
+    }
+
+
 
     // Firebase에서 Read한 결과를 리턴해주는 Interface
     public interface ICallback {

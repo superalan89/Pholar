@@ -1,6 +1,7 @@
 package com.hooooong.pholar.model;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
@@ -11,24 +12,40 @@ import java.util.List;
 public class Post {
     public String post_id;
     public String date;
-    public String comtent;
+    public String post_content;
     public String writer;
-    private List<String> tag;
-    public List<Photo> photo1;
-    public List<Comment> comment1;
-    public List<Like> like1;
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "post_id='" + post_id + '\'' +
-                ", date='" + date + '\'' +
-                ", comtent='" + comtent + '\'' +
-                ", writeer='" + writer + '\'' +
-//                ", tag=" + tag +
-                ", photo=" + photo1 +
-                ", comment=" + comment1 +
-                ", like=" + like1 +
-                '}';
+    public Map<String, Map<String, String>> photo;
+    public Map<String, Map<String, String>> comment;
+    public Map<String, Map<String, String>> like;
+
+    private List<Photo> photoList;
+    private List<Comment> commentList;
+    private List<Like> likeList;
+
+    public List<Photo> getPhotoList() {
+        return photoList;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public List<Like> getLikeList() {
+        return likeList;
+    }
+
+    public void setPhotoList(List<Photo> photoList) {
+        this.photoList = photoList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void setLikeList(List<Like> likeList) {
+        this.likeList = likeList;
     }
 }
+
+
