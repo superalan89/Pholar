@@ -15,16 +15,15 @@ public class User {
     public String status_msg;
     public String phone_number;
     public String profile_path;
-    public Map<String, Map<String, String>> post_thumbnail;
 
-    private List<PostThumbnail> postThumbnailList;
+    public List<PostThumbnail> post_thumbnail;
 
-    public List<PostThumbnail> getPostThumbnailList() {
-        return postThumbnailList;
+    public List<PostThumbnail> getPost_thumbnail() {
+        return post_thumbnail;
     }
 
-    public void setPostThumbnailList(List<PostThumbnail> postThumbnailList) {
-        this.postThumbnailList = postThumbnailList;
+    public void setPost_thumbnail(List<PostThumbnail> post_thumbnail) {
+        this.post_thumbnail = post_thumbnail;
     }
 
     @Override

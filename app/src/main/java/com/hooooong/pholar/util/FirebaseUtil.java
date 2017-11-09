@@ -38,12 +38,12 @@ public class FirebaseUtil {
 
             while(keys.hasNext()) {
                 String key = keys.next();
-                Log.e(TAG, "\t\tKey: " + key + " Value: " + map2.get(key));
+//                Log.e(TAG, "\t\tKey: " + key + " Value: " + map2.get(key));
                 hashMap.put(key, map2.get(key));
             }
 
             jsonObject = getJsonStringFromMap(hashMap);
-            Log.d("heepie", jsonObject.toString());
+//            Log.d("heepie", jsonObject.toString());
             ret.add(gson.fromJson(jsonObject.toString(), CLASS));
 
         }

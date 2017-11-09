@@ -45,7 +45,7 @@ public class PostDAO {
 
     public void create(Post info) {
         // insert the Data
-
+        postRef.setValue(info);
     }
 
     public List<Post> readALL () {
@@ -65,13 +65,7 @@ public class PostDAO {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post item = snapshot.getValue(Post.class);
 
-                    List<Photo> photoList = FirebaseUtil.getNestedClass(item.photo, Photo.class);
-                    List<Comment> commentList = FirebaseUtil.getNestedClass(item.comment, Comment.class);
-                    List<Like> likeList = FirebaseUtil.getNestedClass(item.like, Like.class);
-
-                    item.setPhotoList(photoList);
-                    item.setCommentList(commentList);
-                    item.setLikeList(likeList);
+                    setInnerObject(dataSnapshot, item);
 
                     data.add(item);
                     Log.d(TAG, "read: " + item);
@@ -101,18 +95,7 @@ public class PostDAO {
 
                     Log.d(TAG, "readByPostId: " + item.toString());
 
-                    // For Test
-                    List<Photo> photoList = FirebaseUtil.getNestedClass(item.photo, Photo.class);
-                    List<Comment> commentList = FirebaseUtil.getNestedClass(item.comment, Comment.class);
-                    List<Like> likeList = FirebaseUtil.getNestedClass(item.like, Like.class);
-
-//                    Log.d("heepie", photoList.get(0).toString());
-//                    Log.d("heepie", commentList.get(0).toString());
-//                    Log.d("heepie", likeList.get(0).toString());
-
-                    item.setPhotoList(photoList);
-                    item.setCommentList(commentList);
-                    item.setLikeList(likeList);
+                    setInnerObject(dataSnapshot, item);
 
                     callback.getSinglePostFromFirebaseDB(item);
                 }
@@ -125,7 +108,45 @@ public class PostDAO {
         });
     }
 
+    private void setInnerObject(DataSnapshot dataSnapshot, Post item) {
+        if (dataSnapshot.hasChild("photoList")) {
+            DataSnapshot photoSnapshot = dataSnapshot.child("photoList");
 
+            List<Photo> list = new ArrayList<>();
+
+            for(DataSnapshot data : photoSnapshot.getChildren()){
+                Photo photo = data.getValue(Photo.class);
+                Log.e("heepie", "IN");
+                list.add(photo);
+            }
+
+            item.setPhoto(list);
+        } else if (dataSnapshot.hasChild("comment")) {
+            DataSnapshot photoSnapshot = dataSnapshot.child("comment");
+
+            List<Comment> list = new ArrayList<>();
+
+            for(DataSnapshot data : photoSnapshot.getChildren()){
+                Comment comment = data.getValue(Comment.class);
+                Log.e("heepie", "IN");
+                list.add(comment);
+            }
+
+            item.setComment(list);
+        } else if (dataSnapshot.hasChild("like")) {
+            DataSnapshot photoSnapshot = dataSnapshot.child("like");
+
+            List<Like> list = new ArrayList<>();
+
+            for(DataSnapshot data : photoSnapshot.getChildren()){
+                Like like = data.getValue(Like.class);
+                Log.e("heepie", "IN");
+                list.add(like);
+            }
+
+            item.setLike(list);
+        }
+    }
 
     // Firebase에서 Read한 결과를 리턴해주는 Interface
     public interface ICallback {
