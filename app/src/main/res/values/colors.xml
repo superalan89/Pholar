@@ -8,6 +8,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#808080</color>
     <color name="colorSliver">#C0C0C0</color>
+    <color name="colorTransSliver">#44C0C0C0</color>
 
     <color name="colorBlue">#586dfd</color>
 </resources>
