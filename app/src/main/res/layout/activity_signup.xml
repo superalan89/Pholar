@@ -3,6 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <ImageButton
+        android:id="@+id/imgProfile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="132dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/round_profile"
+        android:elevation="10dp"
+        android:onClick="clickedImageProfile"
+        app:srcCompat="@drawable/profile_person" />
+
     <RelativeLayout
         android:id="@+id/layoutTop"
         android:layout_width="match_parent"
@@ -51,15 +64,4 @@
             android:textColor="@color/colorWhite" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/imgProfile"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="132dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/round_profile"
-        app:srcCompat="@drawable/profile_person"
-    />
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.hooooong.pholar;
 
+import android.*;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -25,7 +26,7 @@ import com.hooooong.pholar.view.home.HomeActivity;
 import java.io.File;
 import java.io.IOException;
 
-public class SignupActivity extends AppCompatActivity{
+public class SignupActivity extends BaseActivity{
 
     private RelativeLayout layoutTop;
     private RelativeLayout layoutBottom;
@@ -37,6 +38,11 @@ public class SignupActivity extends AppCompatActivity{
     private FirebaseUser user;
     private Uri profileUri;
 
+
+    public SignupActivity() {
+        super(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE});
+    }
+
     /*@Override
     public void init() {
         setContentView(R.layout.activity_main);
@@ -44,6 +50,17 @@ public class SignupActivity extends AppCompatActivity{
     }*/
 
     @Override
+    public void init() {
+        setContentView(R.layout.activity_signup);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        initView();
+        setListener();
+    }
+
+/*    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
@@ -53,7 +70,7 @@ public class SignupActivity extends AppCompatActivity{
 
         initView();
         setListener();
-    }
+    }*/
 
     private void initView() {
         layoutTop = findViewById(R.id.layoutTop);
@@ -65,13 +82,6 @@ public class SignupActivity extends AppCompatActivity{
     }
 
     private void setListener(){
-        imgProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivityForResult(,);
-            }
-        });
-
         btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +103,8 @@ public class SignupActivity extends AppCompatActivity{
 
     private static final int REQ_GALLERY = 333;
 
-    private void imgProfile(View view) {
+    public void clickedImageProfile(View view) {
+        Log.e("Test", "==================clickedImageProfile: " );
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQ_GALLERY);
     }

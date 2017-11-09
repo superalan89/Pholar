@@ -1,6 +1,8 @@
 package com.hooooong.pholar;
 
+import android.accounts.Account;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.hooooong.pholar.view.home.HomeActivity;
 
@@ -32,7 +35,11 @@ public class SigninActivity extends AppCompatActivity {
 
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
+    private FirebaseUser fUser;
     public final int RC_SIGN_IN = 12;
+
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +47,13 @@ public class SigninActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         // initView();
 
+        sp = getSharedPreferences("sp", MODE_PRIVATE);
+        editor = sp.edit();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestProfile()
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -59,6 +69,14 @@ public class SigninActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        if(!sp.getString("email", "").equals("")){
+            // 싱글턴에서 불러온 유저 정보가 언제까지 유지되는지 확인 필요
+            fUser = mAuth.getCurrentUser();
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         SignInButton button = (SignInButton) findViewById(R.id.btnLoginGoogle);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +85,6 @@ public class SigninActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-        //btnLoginGoogle
     }
 
     @Override
@@ -82,6 +99,14 @@ public class SigninActivity extends AppCompatActivity {
                 Toast.makeText(SigninActivity.this, "아이디 생성이 완료 되었습니다", Toast.LENGTH_SHORT).show();
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
+
+                Log.e("이메일", account.getEmail());
+
+                editor.putString("email", account.getEmail());
+                editor.commit();
+
+                account.getEmail();
+
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
@@ -100,6 +125,7 @@ public class SigninActivity extends AppCompatActivity {
                             Toast.makeText(SigninActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
                             SigninActivity.this.startActivity(intent);
+                            finish();
                         }
                     }
                 })
