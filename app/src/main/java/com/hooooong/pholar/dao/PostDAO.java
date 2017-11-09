@@ -8,20 +8,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 import com.hooooong.pholar.model.Comment;
 import com.hooooong.pholar.model.Like;
 import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.hooooong.pholar.util.FirebaseUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
@@ -51,7 +45,7 @@ public class PostDAO {
 
     public void create(Post info) {
         // insert the Data
-
+        postRef.setValue(info);
     }
 
     public List<Post> readALL () {
@@ -70,6 +64,9 @@ public class PostDAO {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post item = snapshot.getValue(Post.class);
+
+                    setInnerObject(dataSnapshot, item);
+
                     data.add(item);
                     Log.d(TAG, "read: " + item);
                 }
@@ -98,18 +95,7 @@ public class PostDAO {
 
                     Log.d(TAG, "readByPostId: " + item.toString());
 
-                    // For Test
-                    List<Photo> photoList = getNestedClass(item.photo, Photo.class);
-                    List<Comment> commentList = getNestedClass(item.comment, Comment.class);
-                    List<Like> likeList = getNestedClass(item.like, Like.class);
-
-//                    Log.d("heepie", photoList.get(0).toString());
-//                    Log.d("heepie", commentList.get(0).toString());
-//                    Log.d("heepie", likeList.get(0).toString());
-
-                    item.setPhotoList(photoList);
-                    item.setCommentList(commentList);
-                    item.setLikeList(likeList);
+                    setInnerObject(dataSnapshot, item);
 
                     callback.getSinglePostFromFirebaseDB(item);
                 }
@@ -122,51 +108,44 @@ public class PostDAO {
         });
     }
 
-    // Firebase Object -> Json -> Java Object
-    private <U> List<U> getNestedClass(Map<String, Map<String, String>> target, Class<U> CLASS) {
-        List<U> ret = new ArrayList<>();
+    private void setInnerObject(DataSnapshot dataSnapshot, Post item) {
+        if (dataSnapshot.hasChild("photo")) {
+            DataSnapshot photoSnapshot = dataSnapshot.child("photo");
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        Gson gson = new Gson();
-        JSONObject jsonObject;
+            List<Photo> list = new ArrayList<>();
 
-        Iterator<String> ids = target.keySet().iterator();
-
-        while(ids.hasNext()) {
-            String id = ids.next();
-            Map<String, String> map2 = target.get(id);
-            Iterator<String> keys = map2.keySet().iterator();
-
-            while(keys.hasNext()) {
-                String key = keys.next();
-                Log.e(TAG, "\t\tKey: " + key + " Value: " + map2.get(key));
-                hashMap.put(key, map2.get(key));
+            for(DataSnapshot data : photoSnapshot.getChildren()){
+                Photo photo = data.getValue(Photo.class);
+                Log.e("heepie", "IN");
+                list.add(photo);
             }
 
-            jsonObject = getJsonStringFromMap(hashMap);
-            Log.d("heepie", jsonObject.toString());
-            ret.add(gson.fromJson(jsonObject.toString(), CLASS));
+            item.setPhoto(list);
+        } else if (dataSnapshot.hasChild("comment")) {
+            DataSnapshot photoSnapshot = dataSnapshot.child("comment");
 
-        }
+            List<Comment> list = new ArrayList<>();
 
-        return ret;
-    }
-
-    // Map -> JSON 객체로 변경해주는 메소드
-    public JSONObject getJsonStringFromMap(Map<String, String> hashMap) {
-
-        JSONObject json = new JSONObject();
-        for( Map.Entry<String, String> entry : hashMap.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            try {
-                json.put(key, value);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            for(DataSnapshot data : photoSnapshot.getChildren()){
+                Comment comment = data.getValue(Comment.class);
+                Log.e("heepie", "IN");
+                list.add(comment);
             }
-        }
 
-        return json;
+            item.setComment(list);
+        } else if (dataSnapshot.hasChild("like")) {
+            DataSnapshot photoSnapshot = dataSnapshot.child("like");
+
+            List<Like> list = new ArrayList<>();
+
+            for(DataSnapshot data : photoSnapshot.getChildren()){
+                Like like = data.getValue(Like.class);
+                Log.e("heepie", "IN");
+                list.add(like);
+            }
+
+            item.setLike(list);
+        }
     }
 
     // Firebase에서 Read한 결과를 리턴해주는 Interface

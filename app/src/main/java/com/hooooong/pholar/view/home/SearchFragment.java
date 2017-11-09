@@ -10,7 +10,9 @@ import android.widget.Toast;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.dao.PostDAO;
 import com.hooooong.pholar.dao.UserDAO;
+import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
+import com.hooooong.pholar.model.PostThumbnail;
 import com.hooooong.pholar.model.User;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
         initDataFromFirebaseDB();
 
         // 테스트: post_id로 검색
-        postDAO.readByPostId(this, "post_adfewerwer");
+//        postDAO.readByPostId(this, "-KyUKr9SjWJkV9FD5vIt");
         userDAO.readByUserId(this, "user_qerdfsers");
 
         Toast.makeText(view.getContext(), "Test", Toast.LENGTH_SHORT).show();
@@ -56,8 +58,8 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
 
 
     private void initDataFromFirebaseDB() {
-        postDAO.read(this);
-        userDAO.read(this);
+//        postDAO.read(this);
+//        userDAO.read(this);
 
     }
 
@@ -80,11 +82,9 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
     public void getSinglePostFromFirebaseDB(Post item) {
         // Screen에 반영
         Log.e(TAG, "Single getPostFromFirebaseDB: " + item.toString());
+        Photo p = item.getPhoto().get(0);
 
-        // For Test
-        Log.d("heepie", item.getPhotoList().get(0).toString());
-        Log.d("heepie", item.getCommentList().get(0).toString());
-        Log.d("heepie", item.getLikeList().get(0).toString());
+//        Log.e("heepie", p.imgPath + p.photo_explain + p.storage_path);
     }
 
     @Override
@@ -98,5 +98,9 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
     public void getSingleUserFromFirebaseDB(User item) {
         // Screen에 반영
         Log.e(TAG, "Single getUserFromFirebaseDB: " + item.toString());
+        PostThumbnail postThumbnail = item.getPost_thumbnail().get(0);
+
+        Log.e("heepie", postThumbnail.count_picture + postThumbnail.first_pic_path + postThumbnail.post_id);
+
     }
 }
