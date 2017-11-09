@@ -1,7 +1,6 @@
 package com.hooooong.pholar.model;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
@@ -18,7 +17,7 @@ public class Post {
     public List<Photo> photo;
     public List<Comment> comment;
     public List<Like> like;
-
+  
     public List<Photo> getPhoto() {
         return photo;
     }

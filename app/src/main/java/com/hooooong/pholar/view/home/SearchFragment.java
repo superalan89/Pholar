@@ -64,7 +64,7 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
     }
 
     public void getSinglePostFromFirebaseDB(String post_id) {
-        postDAO.readByPostId(this, post_id);
+        //postDAO.readByPostId(this, post_id);
     }
 
 
@@ -83,7 +83,6 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
         // Screen에 반영
         Log.e(TAG, "Single getPostFromFirebaseDB: " + item.toString());
         Photo p = item.getPhoto().get(0);
-
 //        Log.e("heepie", p.imgPath + p.photo_explain + p.storage_path);
     }
 
