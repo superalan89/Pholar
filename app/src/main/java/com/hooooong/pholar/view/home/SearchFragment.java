@@ -42,7 +42,7 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
         initDataFromFirebaseDB();
 
         // 테스트: post_id로 검색
-        postDAO.readByPostId(this, "post_adfewerwer");
+        //postDAO.readByPostId(this, "post_adfewerwer");
         userDAO.readByUserId(this, "user_qerdfsers");
 
         Toast.makeText(view.getContext(), "Test", Toast.LENGTH_SHORT).show();
@@ -62,7 +62,7 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
     }
 
     public void getSinglePostFromFirebaseDB(String post_id) {
-        postDAO.readByPostId(this, post_id);
+        //postDAO.readByPostId(this, post_id);
     }
 
 
@@ -82,9 +82,9 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
         Log.e(TAG, "Single getPostFromFirebaseDB: " + item.toString());
 
         // For Test
-        Log.d("heepie", item.getPhotoList().get(0).toString());
+       /* Log.d("heepie", item.getPhotoList().get(0).toString());
         Log.d("heepie", item.getCommentList().get(0).toString());
-        Log.d("heepie", item.getLikeList().get(0).toString());
+        Log.d("heepie", item.getLikeList().get(0).toString());*/
     }
 
     @Override

@@ -9,7 +9,6 @@ public class Photo implements Serializable{
     public String photo_id;
     public String photo_explain;
     public String storage_path;
-
     public String imgPath;
     public String thumPath;
 
@@ -35,6 +34,9 @@ public class Photo implements Serializable{
     public void setThumPath(String thumPath) {
         this.thumPath = thumPath;
     }
+
+
+
 
     @Override
     public String toString() {

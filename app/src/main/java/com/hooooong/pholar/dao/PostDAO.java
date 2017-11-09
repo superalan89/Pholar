@@ -1,22 +1,31 @@
 package com.hooooong.pholar.dao;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
-import com.hooooong.pholar.model.Comment;
-import com.hooooong.pholar.model.Like;
-import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
+import com.hooooong.pholar.util.DateUtil;
+import com.hooooong.pholar.view.write.listener.WriteListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,11 +41,14 @@ public class PostDAO {
     private final String TAG = getClass().getSimpleName();
     private final int DEFAULT_GET_NEWPOST = 100;
 
+    private int count = 0;
+
     // For Singleton Pattern
     private static PostDAO instance;
 
     private FirebaseDatabase database;
     private DatabaseReference postRef;
+    private StorageReference storageRef;
 
     public static PostDAO getInstance() {
         if (instance == null)
@@ -47,14 +59,70 @@ public class PostDAO {
     private PostDAO() {
         database = FirebaseDatabase.getInstance();
         postRef = database.getReference("post");
+        storageRef = FirebaseStorage.getInstance().getReference();
     }
 
-    public void create(Post info) {
-        // insert the Data
+    public void create(final WriteListener listener, String path, String uid, final Post info) {
+        for (int i = 0; i < info.getPhoto().size(); i++) {
+            final int j = i;
+            // 파일 업로드 경로
+            Uri uri = Uri.fromFile(new File(info.getPhoto().get(i).getImgPath()));
 
+            storageRef.child(path)                                                                  // photo
+                    .child(uid)                                                                     //  ㄴ  개인 ID
+                    .child(DateUtil.currentYMDDate())                                               //       ㄴ  20171212
+                    .child(System.currentTimeMillis()+"")                                           //              ㄴ currentSystem.png
+                    .putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            info.getPhoto().get(j).storage_path = taskSnapshot.getDownloadUrl().getPath();
+                            count++;
+                            if(count == info.getPhoto().size()){
+                                uploadDataBase(listener, info);
+                                Log.e("PostDAO", "create() 작업 성공");
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // 실패작업
+                            Log.e("PostDAO", "create() 작업 실패");
+                            listener.failPost();
+                        }
+                    });
+        }
     }
 
-    public List<Post> readALL () {
+    /**
+     * 실질적인 POSt 정보들을 Database 에 넣는다.
+     *
+     * @param listener
+     * @param info
+     */
+    private void uploadDataBase(final WriteListener listener, Post info) {
+        String postKey = postRef.push().getKey();
+        info.post_id = postKey;
+
+        postRef.child(postKey).setValue(info)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // 성공작업
+                        listener.successPost();
+                        count = 0;
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // 실패작업
+                        listener.failPost();
+                    }
+                });
+    }
+
+
+    public List<Post> readALL() {
         List<Post> tmp = new ArrayList<>();
 
         return tmp;
@@ -68,7 +136,7 @@ public class PostDAO {
         getTopNewPost.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post item = snapshot.getValue(Post.class);
                     data.add(item);
                     Log.d(TAG, "read: " + item);
@@ -85,7 +153,7 @@ public class PostDAO {
     }
 
     // 글 ID를 통해 글 읽어오는 메소드
-    public void readByPostId (final ICallback callback, String post_id) {
+    /*public void readByPostId(final ICallback callback, String post_id) {
 
         Query getSinglePost = postRef.child(post_id);
 
@@ -120,7 +188,7 @@ public class PostDAO {
 
             }
         });
-    }
+    }*/
 
     // Firebase Object -> Json -> Java Object
     private <U> List<U> getNestedClass(Map<String, Map<String, String>> target, Class<U> CLASS) {
@@ -132,12 +200,12 @@ public class PostDAO {
 
         Iterator<String> ids = target.keySet().iterator();
 
-        while(ids.hasNext()) {
+        while (ids.hasNext()) {
             String id = ids.next();
             Map<String, String> map2 = target.get(id);
             Iterator<String> keys = map2.keySet().iterator();
 
-            while(keys.hasNext()) {
+            while (keys.hasNext()) {
                 String key = keys.next();
                 Log.e(TAG, "\t\tKey: " + key + " Value: " + map2.get(key));
                 hashMap.put(key, map2.get(key));
@@ -156,7 +224,7 @@ public class PostDAO {
     public JSONObject getJsonStringFromMap(Map<String, String> hashMap) {
 
         JSONObject json = new JSONObject();
-        for( Map.Entry<String, String> entry : hashMap.entrySet()) {
+        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             try {
@@ -171,7 +239,8 @@ public class PostDAO {
 
     // Firebase에서 Read한 결과를 리턴해주는 Interface
     public interface ICallback {
-        void getPostFromFirebaseDB (List<Post> data);
-        void getSinglePostFromFirebaseDB (Post item);
+        void getPostFromFirebaseDB(List<Post> data);
+
+        void getSinglePostFromFirebaseDB(Post item);
     }
 }
