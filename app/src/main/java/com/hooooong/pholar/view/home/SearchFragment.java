@@ -39,11 +39,9 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
 
         init();
 
-
         initDataFromFirebaseDB();
 
         // 테스트: post_id로 검색
-//        getSinglePostFromFirebaseDB("post_adfewerwer");
         postDAO.readByPostId(this, "post_adfewerwer");
         userDAO.readByUserId(this, "user_qerdfsers");
 

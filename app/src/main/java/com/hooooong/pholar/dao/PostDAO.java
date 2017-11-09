@@ -60,6 +60,7 @@ public class PostDAO {
         return tmp;
     }
 
+    // 최신글 100개 글을 읽어오는 메소드
     public void read(final ICallback callback) {
         final List<Post> data = new ArrayList<>();
 
@@ -83,6 +84,7 @@ public class PostDAO {
         });
     }
 
+    // 글 ID를 통해 글 읽어오는 메소드
     public void readByPostId (final ICallback callback, String post_id) {
 
         Query getSinglePost = postRef.child(post_id);
@@ -150,6 +152,7 @@ public class PostDAO {
         return ret;
     }
 
+    // Map -> JSON 객체로 변경해주는 메소드
     public JSONObject getJsonStringFromMap(Map<String, String> hashMap) {
 
         JSONObject json = new JSONObject();
@@ -165,8 +168,6 @@ public class PostDAO {
 
         return json;
     }
-
-
 
     // Firebase에서 Read한 결과를 리턴해주는 Interface
     public interface ICallback {
