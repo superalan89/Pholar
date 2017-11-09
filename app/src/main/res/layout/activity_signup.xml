@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="#7b819f">
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -60,8 +59,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="132dp"
+        android:background="@drawable/round_profile"
         android:onClick="clickedImageProfile"
-        android:src="@drawable/round_profile"
-        />
+        android:src="@drawable/profile_person" />
 
 </RelativeLayout>
