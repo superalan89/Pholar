@@ -109,8 +109,8 @@ public class PostDAO {
     }
 
     private void setInnerObject(DataSnapshot dataSnapshot, Post item) {
-        if (dataSnapshot.hasChild("photoList")) {
-            DataSnapshot photoSnapshot = dataSnapshot.child("photoList");
+        if (dataSnapshot.hasChild("photo")) {
+            DataSnapshot photoSnapshot = dataSnapshot.child("photo");
 
             List<Photo> list = new ArrayList<>();
 

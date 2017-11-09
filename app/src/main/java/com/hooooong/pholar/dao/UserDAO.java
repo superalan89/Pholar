@@ -8,6 +8,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.hooooong.pholar.model.Comment;
+import com.hooooong.pholar.model.Like;
+import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.model.PostThumbnail;
 import com.hooooong.pholar.model.User;
@@ -63,8 +66,7 @@ public class UserDAO {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User item = snapshot.getValue(User.class);
 
-                    List<PostThumbnail> postThumbnailList = FirebaseUtil.getNestedClass(item.post_thumbnail, PostThumbnail.class);
-                    item.setPostThumbnailList(postThumbnailList);
+                    setInnerObject(dataSnapshot, item);
 
                     data.add(item);
                     Log.d(TAG, "read: " + item.toString());
@@ -92,8 +94,7 @@ public class UserDAO {
 
                     Log.d(TAG, "readByUserId: " + item.toString());
 
-                    List<PostThumbnail> postThumbnailList = FirebaseUtil.getNestedClass(item.post_thumbnail, PostThumbnail.class);
-                    item.setPostThumbnailList(postThumbnailList);
+                    setInnerObject(dataSnapshot, item);
 
                     callback.getSingleUserFromFirebaseDB(item);
                 }
@@ -104,7 +105,22 @@ public class UserDAO {
 
             }
         });
+    }
 
+    private void setInnerObject(DataSnapshot dataSnapshot, User item) {
+        if (dataSnapshot.hasChild("post_thumbnail")) {
+            DataSnapshot photoSnapshot = dataSnapshot.child("post_thumbnail");
+
+            List<PostThumbnail> list = new ArrayList<>();
+
+            for(DataSnapshot data : photoSnapshot.getChildren()){
+                PostThumbnail postThumbnail = data.getValue(PostThumbnail.class);
+                Log.e("heepie", "IN");
+                list.add(postThumbnail);
+            }
+
+            item.setPost_thumbnail(list);
+        }
     }
 
     // Firebase에서 Read한 결과를 리턴해주는 Interface
