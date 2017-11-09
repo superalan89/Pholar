@@ -15,6 +15,8 @@ import java.util.List;
  */
 
 public class RandomWriteRecyclerViewAdapter extends RecyclerView.Adapter<RandomWriteRecyclerViewAdapter.Holder> {
+    private final String TAG = getClass().getSimpleName();
+
     List<String> data;
 
     public void setDataAndRefresh(List<String> data) {

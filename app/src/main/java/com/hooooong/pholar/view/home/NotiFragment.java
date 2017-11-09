@@ -13,7 +13,7 @@ import com.hooooong.pholar.R;
  * A simple {@link Fragment} subclass.
  */
 public class NotiFragment extends Fragment {
-
+    private final String TAG = getClass().getSimpleName();
 
     public NotiFragment() {
         // Required empty public constructor

@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.hooooong.pholar.R;
-import com.hooooong.pholar.model.PhotoVO;
+import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.util.GalleryUtil;
 import com.hooooong.pholar.view.gallery.adapter.GalleryAdapter;
 import com.hooooong.pholar.view.gallery.divider.GridDividerDecoration;
@@ -70,19 +70,19 @@ public class GalleryActivity extends BaseActivity implements PhotoClickListener 
 
     @SuppressLint("StaticFieldLeak")
     private void setGallery() {
-        new AsyncTask<String, Void, List<PhotoVO>>() {
+        new AsyncTask<String, Void, List<Photo>>() {
             @Override
             protected void onPreExecute() {
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
-            protected List<PhotoVO> doInBackground(String... strings) {
+            protected List<Photo> doInBackground(String... strings) {
                 return GalleryUtil.fetchAllImages(GalleryActivity.this);
             }
 
             @Override
-            protected void onPostExecute(List<PhotoVO> result) {
+            protected void onPostExecute(List<Photo> result) {
                 progressBar.setVisibility(View.GONE);
                 galleryAdapter.setPhotoList(result);
             }
@@ -103,7 +103,7 @@ public class GalleryActivity extends BaseActivity implements PhotoClickListener 
 
                 if (true) {
                     // 선택된 사진이 있으면 다음 Intent 로 이동한다.
-                    List<PhotoVO> selectedPhotoList = galleryAdapter.getSelectPhotoList();
+                    List<Photo> selectedPhotoList = galleryAdapter.getSelectPhotoList();
                     for (int i = 0; i < selectedPhotoList.size(); i++) {
                         Log.i("", ">>> selectedPhotoList   :  " + selectedPhotoList.get(i).getImgPath());
                     }
@@ -118,12 +118,12 @@ public class GalleryActivity extends BaseActivity implements PhotoClickListener 
 
     @Override
     public void PhotoClick(GalleryAdapter.PhotoViewHolder photoViewHolder, int position) {
-        PhotoVO photoVO = galleryAdapter.getPhotoList().get(position);
-        List<PhotoVO> selectPhootoList = galleryAdapter.getSelectPhotoList();
-        if (selectPhootoList.contains(photoVO)) {
-            galleryAdapter.removeSelectPhotoList(photoVO);
+        Photo photo = galleryAdapter.getPhotoList().get(position);
+        List<Photo> selectPhootoList = galleryAdapter.getSelectPhotoList();
+        if (selectPhootoList.contains(photo)) {
+            galleryAdapter.removeSelectPhotoList(photo);
         } else {
-            galleryAdapter.addSelectPhotoList(photoVO);
+            galleryAdapter.addSelectPhotoList(photo);
         }
     }
 

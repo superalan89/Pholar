@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.hooooong.pholar.model.PhotoVO;
+import com.hooooong.pholar.model.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ public class GalleryUtil {
      *
      * @return
      */
-    public static List<PhotoVO> getAllPhotoPathList(final Context context) {
-        final ArrayList<PhotoVO> photoList = new ArrayList<>();
+    public static List<Photo> getAllPhotoPathList(final Context context) {
+        final ArrayList<Photo> photoList = new ArrayList<>();
         Uri uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
         String[] projection = {
                 MediaStore.Images.Thumbnails.DATA
@@ -31,15 +31,15 @@ public class GalleryUtil {
         Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
         int columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         while (cursor.moveToNext()) {
-            PhotoVO photoVO = new PhotoVO(cursor.getString(columnIndexData), null);
-            photoList.add(photoVO);
+            Photo photo = new Photo(cursor.getString(columnIndexData), null);
+            photoList.add(photo);
         }
         cursor.close();
         return photoList;
     }
 
 
-    public static List<PhotoVO> fetchAllImages(Context context) {
+    public static List<Photo> fetchAllImages(Context context) {
         // DATA는 이미지 파일의 스트림 데이터 경로를 나타냅니다.
         String[] projection = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
 
@@ -50,7 +50,7 @@ public class GalleryUtil {
                 null,
                 null);      // 정렬 안 함
 
-        ArrayList<PhotoVO> result = new ArrayList<>(imageCursor.getCount());
+        ArrayList<Photo> result = new ArrayList<>(imageCursor.getCount());
 
         int dataColumnIndex = imageCursor.getColumnIndex(projection[0]);
         int idColumnIndex = imageCursor.getColumnIndex(projection[1]);
@@ -66,7 +66,7 @@ public class GalleryUtil {
                 Uri thumbnailUri = uriToThumbnail(context, imageId);
                 Uri imageUri = Uri.parse(filePath);
                 // 원본 이미지와 썸네일 이미지의 uri를 모두 담을 수 있는 클래스를 선언합니다.
-                PhotoVO photo = new PhotoVO(thumbnailUri.getPath(), imageUri.getPath());
+                Photo photo = new Photo(thumbnailUri.getPath(), imageUri.getPath());
                 result.add(photo);
             } while (imageCursor.moveToNext());
         } else {

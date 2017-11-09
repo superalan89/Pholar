@@ -19,6 +19,7 @@ import java.util.List;
  */
 
 public class ListFragment extends Fragment {
+    private final String TAG = getClass().getSimpleName();
 
     // 새로운 글을 보여주는 ViewPager와 Adapter
     private ViewPager newWriteViewPager;

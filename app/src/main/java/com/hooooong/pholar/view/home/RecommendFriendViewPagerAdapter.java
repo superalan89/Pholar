@@ -16,6 +16,8 @@ import java.util.List;
  */
 
 public class RecommendFriendViewPagerAdapter extends PagerAdapter {
+    private final String TAG = getClass().getSimpleName();
+
     Context context;
     List<String> data;
 
