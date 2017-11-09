@@ -17,6 +17,8 @@ import java.util.List;
  */
 
 public class NewWriteViewPagerAdapter extends PagerAdapter {
+    private final String TAG = getClass().getSimpleName();
+
     private Context context;
     private List<String> data;
 

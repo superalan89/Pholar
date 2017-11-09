@@ -13,7 +13,7 @@ import com.hooooong.pholar.R;
  * A simple {@link Fragment} subclass.
  */
 public class MypageFragment extends Fragment {
-
+    private final String TAG = getClass().getSimpleName();
 
     public MypageFragment() {
         // Required empty public constructor

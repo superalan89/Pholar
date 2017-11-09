@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.hooooong.pholar.model.PhotoVO;
+import com.hooooong.pholar.model.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,66 +17,76 @@ import java.util.List;
 public class GalleryUtil {
 
     /**
-     * 갤러리 이미지 반환
+     * Gallery 이미지 반환
      *
+     * @param context
      * @return
      */
-    public static List<PhotoVO> getAllPhotoPathList(final Context context) {
-        final ArrayList<PhotoVO> photoList = new ArrayList<>();
-        Uri uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
+    public static List<Photo> getAllPhotoPathList(final Context context) {
+        ArrayList<Photo> photoList = new ArrayList<>();
+
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {
-                MediaStore.Images.Thumbnails.DATA
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.DATE_MODIFIED
         };
 
-        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        Cursor cursor = context.getContentResolver().query(
+                uri,
+                projection,
+                null,
+                null,
+                projection[1] + " DESC");
         int columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+
         while (cursor.moveToNext()) {
-            PhotoVO photoVO = new PhotoVO(cursor.getString(columnIndexData), null);
-            photoList.add(photoVO);
+            Photo photo = new Photo(cursor.getString(columnIndexData), null);
+            photoList.add(photo);
         }
         cursor.close();
+
         return photoList;
     }
 
-
-    public static List<PhotoVO> fetchAllImages(Context context) {
-        // DATA는 이미지 파일의 스트림 데이터 경로를 나타냅니다.
+    /**
+     * Galery 이미지 반환
+     *
+     * @param context
+     * @return
+     */
+    public static List<Photo> fetchAllImages(Context context) {
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
 
         Cursor imageCursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // 이미지 컨텐트 테이블
-                projection, // DATA, _ID를 출력
+                uri, // 이미지 컨텐트 테이블
+                projection,                                  // DATA, _ID를 출력
                 null,       // 모든 개체 출력
                 null,
                 null);      // 정렬 안 함
-
-        ArrayList<PhotoVO> result = new ArrayList<>(imageCursor.getCount());
-
+        List<Photo> result = new ArrayList<>(imageCursor.getCount());
         int dataColumnIndex = imageCursor.getColumnIndex(projection[0]);
         int idColumnIndex = imageCursor.getColumnIndex(projection[1]);
 
-        if (imageCursor == null) {
-            // Error 발생
-            // 적절하게 handling 해주세요
-        } else if (imageCursor.moveToFirst()) {
+        if (imageCursor.moveToFirst()) {
             do {
                 String filePath = imageCursor.getString(dataColumnIndex);
                 String imageId = imageCursor.getString(idColumnIndex);
 
                 Uri thumbnailUri = uriToThumbnail(context, imageId);
                 Uri imageUri = Uri.parse(filePath);
-                // 원본 이미지와 썸네일 이미지의 uri를 모두 담을 수 있는 클래스를 선언합니다.
-                PhotoVO photo = new PhotoVO(thumbnailUri.getPath(), imageUri.getPath());
+                // 원본 이미지와 썸네일 이미지의 uri 를 모두 담을 수 있는 클래스를 선언합니다.
+                Photo photo = new Photo(imageUri.getPath(), thumbnailUri.getPath());
                 result.add(photo);
             } while (imageCursor.moveToNext());
         } else {
-            // imageCursor가 비었습니다.
+            // imageCursor 가 비었습니다.
         }
         imageCursor.close();
         return result;
     }
 
-    static Uri uriToThumbnail(Context context, String imageId) {
+    private static Uri uriToThumbnail(Context context, String imageId) {
         // DATA는 이미지 파일의 스트림 데이터 경로를 나타냅니다.
         String[] projection = {MediaStore.Images.Thumbnails.DATA};
         ContentResolver contentResolver = context.getContentResolver();
@@ -88,12 +98,8 @@ public class GalleryUtil {
                 MediaStore.Images.Thumbnails.IMAGE_ID + "=?", // IMAGE_ID는 원본 이미지의 _ID를 나타냅니다.
                 new String[]{imageId},
                 null);
-        if (thumbnailCursor == null) {
-            // Error 발생
-            // 적절하게 handling 해주세요
-            return null;
 
-        } else if (thumbnailCursor.moveToFirst()) {
+        if (thumbnailCursor.moveToFirst()) {
             int thumbnailColumnIndex = thumbnailCursor.getColumnIndex(projection[0]);
 
             String thumbnailPath = thumbnailCursor.getString(thumbnailColumnIndex);
