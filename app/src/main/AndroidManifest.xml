@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hooooong.pholar">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,9 +23,7 @@
         </activity>
         -->
 
-        <activity android:name=".view.home.HomeActivity">
-
-        </activity>
+        
         <activity android:name=".SigninActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +31,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity"/>
+      
+        <activity android:name=".view.home.HomeActivity"/>
+        <activity android:name=".view.gallery.GalleryActivity"/>
+
+        <!-- 사진을 저장하기 위해 파일에 대한 권한 획득 설정 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <!-- 프로바이더가 사용하는 파일의 경로 -->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path"
+                />
+        </provider>
     </application>
 
 </manifest>
