@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
+ *
+ * User 정보 테이블
  */
 
 public class User {
@@ -14,6 +16,16 @@ public class User {
     public String phone_number;
     public String profile_path;
     public Map<String, Map<String, String>> post_thumbnail;
+
+    private List<PostThumbnail> postThumbnailList;
+
+    public List<PostThumbnail> getPostThumbnailList() {
+        return postThumbnailList;
+    }
+
+    public void setPostThumbnailList(List<PostThumbnail> postThumbnailList) {
+        this.postThumbnailList = postThumbnailList;
+    }
 
     @Override
     public String toString() {

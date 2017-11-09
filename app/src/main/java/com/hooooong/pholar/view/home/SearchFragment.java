@@ -98,5 +98,7 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
     public void getSingleUserFromFirebaseDB(User item) {
         // Screen에 반영
         Log.e(TAG, "Single getUserFromFirebaseDB: " + item.toString());
+
+        Log.d("heepie", item.getPostThumbnailList().get(0).toString());
     }
 }

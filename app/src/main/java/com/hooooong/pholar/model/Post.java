@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Heepie on 2017. 11. 8..
  *
- * User가 작성한 글의 테이블
+ * User가 작성한 Post의 테이블
  */
 
 public class Post {

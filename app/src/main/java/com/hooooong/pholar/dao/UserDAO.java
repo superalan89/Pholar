@@ -9,7 +9,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hooooong.pholar.model.Post;
+import com.hooooong.pholar.model.PostThumbnail;
 import com.hooooong.pholar.model.User;
+import com.hooooong.pholar.util.FirebaseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,10 @@ public class UserDAO {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User item = snapshot.getValue(User.class);
+
+                    List<PostThumbnail> postThumbnailList = FirebaseUtil.getNestedClass(item.post_thumbnail, PostThumbnail.class);
+                    item.setPostThumbnailList(postThumbnailList);
+
                     data.add(item);
                     Log.d(TAG, "read: " + item.toString());
                 }
@@ -74,17 +80,22 @@ public class UserDAO {
         });
     }
 
-    public void readByUserId (final UserDAO.ICallback callback, String post_id) {
+    public void readByUserId (final UserDAO.ICallback callback, String user_id) {
 
-        Query getSinglePost = userRef.child(post_id);
+        Query getSinglePost = userRef.child(user_id);
 
         getSinglePost.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     User item = dataSnapshot.getValue(User.class);
-                    callback.getSingleUserFromFirebaseDB(item);
+
                     Log.d(TAG, "readByUserId: " + item.toString());
+
+                    List<PostThumbnail> postThumbnailList = FirebaseUtil.getNestedClass(item.post_thumbnail, PostThumbnail.class);
+                    item.setPostThumbnailList(postThumbnailList);
+
+                    callback.getSingleUserFromFirebaseDB(item);
                 }
             }
 
