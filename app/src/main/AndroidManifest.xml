@@ -19,12 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".SignupActivity" />
         <activity
             android:name=".view.home.HomeActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".view.gallery.GalleryActivity"
             android:screenOrientation="portrait" />

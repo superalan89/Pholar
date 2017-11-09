@@ -26,7 +26,6 @@ public class GalleryUtil {
         ArrayList<Photo> photoList = new ArrayList<>();
 
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
         String[] projection = {
                 MediaStore.Images.Media.DATA,
                 MediaStore.Images.Media.DATE_MODIFIED
@@ -49,7 +48,6 @@ public class GalleryUtil {
         return photoList;
     }
 
-
     /**
      * Galery 이미지 반환
      *
@@ -66,9 +64,7 @@ public class GalleryUtil {
                 null,       // 모든 개체 출력
                 null,
                 null);      // 정렬 안 함
-
         List<Photo> result = new ArrayList<>(imageCursor.getCount());
-
         int dataColumnIndex = imageCursor.getColumnIndex(projection[0]);
         int idColumnIndex = imageCursor.getColumnIndex(projection[1]);
 
@@ -79,7 +75,6 @@ public class GalleryUtil {
 
                 Uri thumbnailUri = uriToThumbnail(context, imageId);
                 Uri imageUri = Uri.parse(filePath);
-
                 // 원본 이미지와 썸네일 이미지의 uri 를 모두 담을 수 있는 클래스를 선언합니다.
                 Photo photo = new Photo(imageUri.getPath(), thumbnailUri.getPath());
                 result.add(photo);
