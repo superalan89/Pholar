@@ -27,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.hooooong.pholar.view.home.DetailActivity;
 import com.hooooong.pholar.view.home.HomeActivity;
 
 public class SigninActivity extends AppCompatActivity {
@@ -123,7 +124,10 @@ public class SigninActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(SigninActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
+
+//                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
+                            // For Test
+                            Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
                             SigninActivity.this.startActivity(intent);
                             finish();
                         }
