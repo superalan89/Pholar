@@ -69,7 +69,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/title_Profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
