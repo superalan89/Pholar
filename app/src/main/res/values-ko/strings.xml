@@ -3,4 +3,8 @@
     <string name="app_name">폴라</string>
 
     <string name="title_gallery">사진선택</string>
+    <string name="menu_ok">완료</string>
+    <string name="title_write">글작성</string>
+    <string name="dialog_cancel">취소</string>
+    <string name="dialog_ok">확인</string>
 </resources>

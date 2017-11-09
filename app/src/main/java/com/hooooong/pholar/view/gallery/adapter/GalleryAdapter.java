@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.model.Photo;
-import com.hooooong.pholar.view.gallery.listener.PhotoClickListener;
+import com.hooooong.pholar.view.gallery.listener.GalleryListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
 
     private Context context;
     private List<Photo> photoList = new ArrayList<>();
-    private List<Photo> selectPhotoList;
-    private PhotoClickListener onItemClickListener;
+    private ArrayList<Photo> selectPhotoList;
+    private GalleryListener galleryListener;
 
     /**
      * PhotoList 반환
@@ -41,10 +41,27 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
      *
      * @return
      */
-    public List<Photo> getSelectPhotoList() {
+    public ArrayList<Photo> getSelectPhotoList() {
         return selectPhotoList;
     }
 
+
+    /**
+     * 선택한 Photo 추가하기
+     *
+     * @param photo
+     */
+    public void addSelectPhotoList(Photo photo) {
+        if (selectPhotoList.size() < 10) {
+            // 10 보다 작을 때
+            selectPhotoList.add(photo);
+            notifyItemChanged(photoList.indexOf(photo));
+            galleryListener.changeView(selectPhotoList.size());
+        } else {
+            // 10보다 클 때
+            galleryListener.selectError();
+        }
+    }
 
     /**
      * 선택한 Photo 지우기
@@ -54,17 +71,22 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
     public void removeSelectPhotoList(Photo photo) {
         selectPhotoList.remove(photo);
         notifyDataSetChanged();
+        galleryListener.changeView(selectPhotoList.size());
+
     }
 
     /**
-     * 선택한 Photo 추가하기
+     * 선택한 Photo Setting
      *
-     * @param photo
+     * @param selectPhotoList
      */
-    public void addSelectPhotoList(Photo photo) {
-        selectPhotoList.add(photo);
+    /*
+    public void setSelectPhotoList(ArrayList<Photo> selectPhotoList) {
+        this.selectPhotoList = selectPhotoList;
         notifyDataSetChanged();
+        //galleryListener.changeView(selectPhotoList.size());
     }
+    */
 
     /**
      * 생성자
@@ -74,14 +96,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
     public GalleryAdapter(Context context) {
         this.context = context;
         this.selectPhotoList = new ArrayList<>();
-        this.onItemClickListener = (PhotoClickListener) context;
+        this.galleryListener = (GalleryListener) context;
     }
 
     public void setPhotoList(List<Photo> photoList) {
         this.photoList = photoList;
         notifyDataSetChanged();
     }
-
 
     /**
      * 레이아웃을 만들어서 Holer에 저장
@@ -92,7 +113,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
      */
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_photo, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_gallery_photo, viewGroup, false);
         return new PhotoViewHolder(view);
     }
 
@@ -104,10 +125,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
      * @param position
      */
     @Override
-    public void onBindViewHolder(final PhotoViewHolder viewHolder, final int position) {
-        final Photo photo = photoList.get(position);
+    public void onBindViewHolder(PhotoViewHolder viewHolder, int position) {
+        Photo photo = photoList.get(position);
 
         viewHolder.setImageView(photo.getImgPath());
+        viewHolder.setPosition(position);
 
         if (selectPhotoList.contains(photo)) {
             viewHolder.setLayout(View.VISIBLE);
@@ -115,17 +137,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
         } else {
             viewHolder.setLayout(View.INVISIBLE);
         }
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    onItemClickListener.PhotoClick(viewHolder, position);
-                }
-            }
-        });
     }
-
 
     @Override
     public int getItemCount() {
@@ -137,6 +149,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
      * 뷰 재활용을 위한 viewHolder
      */
     public class PhotoViewHolder extends RecyclerView.ViewHolder {
+        private int position;
         private ImageView imgPhoto;
         private RelativeLayout layoutSelect;
         private TextView textNumber;
@@ -146,6 +159,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
             layoutSelect = itemView.findViewById(R.id.layoutSelect);
             textNumber = itemView.findViewById(R.id.textNumber);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (galleryListener != null) {
+                        galleryListener.PhotoClick(position);
+                    }
+                }
+            });
         }
 
         void setTextNumber(int number) {
@@ -166,6 +188,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
             } else {
                 layoutSelect.setVisibility(View.INVISIBLE);
             }
+        }
+
+        void setPosition(int position) {
+            this.position = position;
         }
     }
 }
