@@ -37,6 +37,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:11.0.4'
     //이미지 로더 라이브러리
     implementation 'com.github.bumptech.glide:glide:3.6.0'
+    //Circle Image 라이브러리
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

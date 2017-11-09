@@ -2,11 +2,13 @@ package com.hooooong.pholar;
 
 import android.*;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -55,6 +59,11 @@ public class SignupActivity extends BaseActivity{
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        Log.d("nick", user.getDisplayName());
+        if(user.getDisplayName() != null) {
+            Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+            startActivity(intent);
+        }
 
         initView();
         setListener();

@@ -68,15 +68,15 @@ public class SigninActivity extends AppCompatActivity {
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
-
+        fUser = mAuth.getCurrentUser();
         if(!sp.getString("email", "").equals("")){
             // 싱글턴에서 불러온 유저 정보가 언제까지 유지되는지 확인 필요
-            fUser = mAuth.getCurrentUser();
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();
         }
-
+        if(fUser != null)
+            Log.d("start Activity", fUser.getDisplayName());
         SignInButton button = (SignInButton) findViewById(R.id.btnLoginGoogle);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +99,7 @@ public class SigninActivity extends AppCompatActivity {
                 Toast.makeText(SigninActivity.this, "아이디 생성이 완료 되었습니다", Toast.LENGTH_SHORT).show();
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-
+                fUser = mAuth.getCurrentUser();
                 Log.e("이메일", account.getEmail());
 
                 editor.putString("email", account.getEmail());

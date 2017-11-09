@@ -3,24 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageButton
-        android:id="@+id/imgProfile"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="132dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/round_profile"
-        android:elevation="10dp"
-        android:onClick="clickedImageProfile"
-        app:srcCompat="@drawable/profile_person" />
-
     <RelativeLayout
         android:id="@+id/layoutTop"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="#7b819f"></RelativeLayout>
+        android:background="#7b819f">
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layoutBottom"
@@ -63,5 +52,16 @@
             android:text="확인"
             android:textColor="@color/colorWhite" />
     </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="132dp"
+        android:onClick="clickedImageProfile"
+        android:src="@drawable/round_profile"
+        />
 
 </RelativeLayout>
