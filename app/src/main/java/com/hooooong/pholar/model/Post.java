@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Heepie on 2017. 11. 8..
  *
- * User가 작성한 글의 테이블
+ * User가 작성한 Post의 테이블
  */
 
 public class Post {
@@ -14,10 +14,10 @@ public class Post {
     public String post_content;
     public String writer;
 
-    private List<Photo> photo;
-    private List<Comment> comment;
-    private List<Like> like;
-
+    public List<Photo> photo;
+    public List<Comment> comment;
+    public List<Like> like;
+  
     public List<Photo> getPhoto() {
         return photo;
     }
