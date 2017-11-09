@@ -36,4 +36,25 @@
         <item name="android:textColorSecondary">@color/colorWhite</item>
     </style>
 
+    <style name="WriteTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/colorWhite</item>
+        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorBlue</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionMenuTextColor">@color/colorBlue</item>
+    </style>
+
+    <!-- EditText 스타일 지정-->
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">@color/colorWhite</item> <!--포커스 되어있지 않은 경우의 밑줄 부분-->
+        <item name="colorControlActivated">@color/colorWhite</item> <!--손끝으로 터치되어 있는 부분. text selection handle라고 부른다고 한다-->
+        <item name="android:textCursorDrawable">@color/colorBlack</item> <!--커서 색. drawable 지정되지만, 색을 설정하는것도 된다-->
+        <item name="android:textColor">@color/colorBlack</item> <!--텍스트 색-->
+        <item name="android:textColorHint">@color/colorSliver</item> <!--입력전의 Hint (포커스 Holder)-->
+        <item name="android:textColorHighlight">@color/colorWhite</item> <!--텍스트 선택색-->
+    </style>
 </resources>
