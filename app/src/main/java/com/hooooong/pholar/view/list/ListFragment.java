@@ -1,4 +1,4 @@
-package com.hooooong.pholar.view.home;
+package com.hooooong.pholar.view.list;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hooooong.pholar.R;
+import com.hooooong.pholar.view.list.adapter.NewWriteViewPagerAdapter;
+import com.hooooong.pholar.view.list.adapter.RandomWriteRecyclerViewAdapter;
+import com.hooooong.pholar.view.list.adapter.RecommendFriendViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +49,6 @@ public class ListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         initView(view);
-
-
         // Inflate the layout for this fragment
         return view;
 
