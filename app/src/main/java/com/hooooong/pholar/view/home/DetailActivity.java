@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.dao.PostDAO;
 import com.hooooong.pholar.dao.UserDAO;
@@ -20,13 +22,13 @@ import com.hooooong.pholar.model.User;
 
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity implements PostDAO.ICallback, UserDAO.ICallback {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class DetailActivity extends AppCompatActivity implements PostDAO.ICallback {
     private PostDAO postDAO;
-    private UserDAO userDAO;
     private String post_id;
-    private Post post;
-    private User user;
-    private ImageView detailProfile;
+    private CircleImageView detailProfile;
+    private CircleImageView detailCommenterProfile;
     private TextView detailId;
     private TextView detailTime;
     private TextView detailContent;
@@ -34,6 +36,8 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
     private LinearLayout detailPicLayout;
     private RelativeLayout progressBarLayout;
     private TextView commentWriterId;
+
+    private Post post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
 //        post_id = getIntent().getStringExtra("post_id");
 
         // 테스트
-        post_id = "-KyVcailcSYuomJdjcEU";
+        post_id = "-KyZJbPkdgh4yKI0cdzF";
 
         initView();
         init();
@@ -54,8 +58,6 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
 
 //        isShowProgressBar(true);
         postDAO.readByPostId(this, post_id);
-
-        userDAO = UserDAO.getInstance();
     }
 
     private void isShowProgressBar(boolean isShow) {
@@ -76,17 +78,21 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
     public void getSinglePostFromFirebaseDB(Post item) {
         Log.e("heepie1", "getSinglePostFromFirebaseDB: " + item.post_id);
         post = item;
-        String user_id = "YCd1Xok8M3T295cAIErJUy6iuI72";
-        userDAO.readByUserId(DetailActivity.this, user_id);
+
+        setDataToScreen(post);
+
+        String user_id = post.user.user_id;
+//        Log.e("heepie1", "getSinglePostFromFirebaseDB: " + user_id);
+//        userDAO.readByUserId(DetailActivity.this, user_id);
     }
 
-    private void setDataToScreen(Post post, User user) {
+    private void setDataToScreen(Post post) {
         String content = post.post_content;
         String date = post.date;
         List<Photo> photoList = post.photo;
 
-        String nickname = user.nickname;
-        String profile_path = user.profile_path;
+        String nickname = post.user.nickname;
+        String profile_path = post.user.profile_path;
 
 
         Glide.with(this)
@@ -117,21 +123,12 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
         }
 
         // 현재 사용자의 정보
-        commentWriterId.setText("현재 사용자 Id");
-    }
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
-    @Override
-    public void getUserFromFirebaseDB(List<User> data) {
-
-    }
-
-    @Override
-    public void getSingleUserFromFirebaseDB(User item) {
-        user = item;
-        Log.e("heepie1", "getSinglePostFromFirebaseDB: " + user.nickname);
-
-        setDataToScreen(post, user);
-//        isShowProgressBar(false);
+        commentWriterId.setText(mUser.getDisplayName());
+        Glide.with(this)
+                .load(mUser.getPhotoUrl())
+                .into(detailCommenterProfile);
     }
 
     private void initView() {
@@ -142,6 +139,10 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
         detailPicLayout = findViewById(R.id.detail_pic_layout);
         progressBarLayout = findViewById(R.id.progressBarLayout);
         commentWriterId = findViewById(R.id.comment_writer_id);
+        detailCommenterProfile = findViewById(R.id.comment_writer_profile);
     }
 
+    public void clickedRegisterComment(View view) {
+
+    }
 }

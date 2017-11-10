@@ -48,9 +48,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp"
-        >
+        android:padding="8dp">
 
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/comment_writer_profile"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/comment_writer_id"
@@ -59,7 +66,7 @@
             android:layout_marginStart="8dp"
             android:text="댓글 작성자 Id"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/comment_writer_profile"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
@@ -68,13 +75,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/comment_writer_id"
             android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             android:layout_toLeftOf="@+id/registerCommentBtn"
             android:layout_toStartOf="@+id/registerCommentBtn"
             android:hint="댓글을 남겨주세요!"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/registerCommentBtn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/comment_writer_id" />
+            app:layout_constraintTop_toBottomOf="@+id/comment_writer_profile" />
 
         <Button
             android:id="@+id/registerCommentBtn"
@@ -83,6 +91,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:onClick="clickedRegisterComment"
             android:text="등록"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

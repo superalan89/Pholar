@@ -224,9 +224,6 @@ public class PostDAO {
             }
 
             item.setLike(list);
-        } else if (dataSnapshot.hasChild("user")) {
-            User user = dataSnapshot.getValue(User.class);
-            item.user = user;
         }
     }
 
