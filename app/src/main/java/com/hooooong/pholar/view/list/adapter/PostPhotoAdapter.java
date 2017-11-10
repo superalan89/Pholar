@@ -18,14 +18,16 @@ import java.util.List;
 public class PostPhotoAdapter extends PagerAdapter {
 
     private List<View> views;
-
-    public PostPhotoAdapter(Context context, List<Photo> photoList) {
+    View.OnClickListener mOnClickListener;
+    public PostPhotoAdapter(Context context, List<Photo> photoList, View.OnClickListener mOnClickListener) {
         views = new ArrayList<>(photoList.size());
         for(Photo photo : photoList){
             View view = new PostPhotoView(context, photo);
             views.add(view);
         }
+        this.mOnClickListener = mOnClickListener;
     }
+
 
     @Override
     public int getCount() {
@@ -35,6 +37,7 @@ public class PostPhotoAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = views.get(position);
+        view.setOnClickListener(mOnClickListener);
         container.addView(view);
         return view;
     }

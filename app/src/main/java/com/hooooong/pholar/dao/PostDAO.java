@@ -248,7 +248,7 @@ public class PostDAO {
 
         Query getSinglePost = postRef.child(post_id);
 
-        getSinglePost.addListenerForSingleValueEvent(new ValueEventListener() {
+        getSinglePost.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -268,6 +268,27 @@ public class PostDAO {
 
             }
         });
+
+/*        getSinglePost.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Post item = dataSnapshot.getValue(Post.class);
+//                    callback.getSinglePostFromFirebaseDB(item);
+
+                    Log.d(TAG, "readByPostId: " + item.toString());
+
+                    setInnerObject(dataSnapshot, item);
+
+                    callback.getSinglePostFromFirebaseDB(item);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
     }
 
     public void updatePost(Post info) {
