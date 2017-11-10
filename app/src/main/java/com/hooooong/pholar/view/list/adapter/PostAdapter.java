@@ -201,7 +201,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             imgLike.setOnClickListener(this);
             imgComment.setOnClickListener(this);
             imgShare.setOnClickListener(this);
-            viewPager.setOnClickListener(this);
         }
 
         void setPostId(String post_id) {
@@ -264,10 +263,18 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             }
         }
+        View.OnClickListener o = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("post_id",post_id);
+                context.startActivity(intent);
+            }
+        };
 
         void setViewPager(List<Photo> photoList) {
 
-            postPhotoAdapter = new PostPhotoAdapter(context, photoList);
+            postPhotoAdapter = new PostPhotoAdapter(context, photoList, o);
             viewPager.setAdapter(postPhotoAdapter);
 
             if (photoList.size() == 1) {
@@ -318,6 +325,12 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     Intent shareIntent = new Intent(context, DetailActivity.class);
                     shareIntent.putExtra("post_id", post_id);
                     context.startActivity(shareIntent);
+                    break;
+
+                case R.id.imageLayout:
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("post_id", post_id);
+                    context.startActivity(intent);
                     break;
             }
         }
