@@ -33,9 +33,7 @@ public class NotiFragment extends Fragment {
         view.findViewById(R.id.noti).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(v.getContext(), SigninActivity.class);
-                startActivity(intent);
+
             }
         });
 

@@ -248,7 +248,7 @@ public class PostDAO {
 
         Query getSinglePost = postRef.child(post_id);
 
-        getSinglePost.addListenerForSingleValueEvent(new ValueEventListener() {
+        getSinglePost.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -268,6 +268,27 @@ public class PostDAO {
 
             }
         });
+
+/*        getSinglePost.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Post item = dataSnapshot.getValue(Post.class);
+//                    callback.getSinglePostFromFirebaseDB(item);
+
+                    Log.d(TAG, "readByPostId: " + item.toString());
+
+                    setInnerObject(dataSnapshot, item);
+
+                    callback.getSinglePostFromFirebaseDB(item);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
     }
 
     public void updatePost(Post info) {
@@ -278,7 +299,7 @@ public class PostDAO {
         postRef.child(post_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String user_id = dataSnapshot.child("user").child("user_id").getValue(String.class);
+                final String user_id = dataSnapshot.child("user").child("user_id").getValue(String.class);
                 userRef.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -288,7 +309,7 @@ public class PostDAO {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                if (!post_id.equals(user.getUid())) {
+                                if (!user_id.equals(user.getUid())) {
                                     SendNotification.sendCommentNotification(post_id, user.getDisplayName(), token);
                                 }
                             }
