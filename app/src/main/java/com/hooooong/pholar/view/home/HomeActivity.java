@@ -9,6 +9,8 @@ import android.view.MenuItem;
 
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.view.gallery.GalleryActivity;
+import com.hooooong.pholar.view.list.ListFragment;
+import com.hooooong.pholar.view.mypage.MypageFragment;
 
 public class HomeActivity extends AppCompatActivity {
 

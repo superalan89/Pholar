@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:11.0.4'
     implementation 'com.google.firebase:firebase-storage:11.0.4'
     implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.google.firebase:firebase-crash:11.0.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -41,7 +42,12 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     //Circle Image 라이브러리
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    // viewpager 도트
+    implementation 'com.matthew-tamlin:sliding-intro-screen:2.1.2'
 }
+
+
+
 
 
 apply plugin: 'com.google.gms.google-services'

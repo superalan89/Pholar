@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hooooong.pholar.R;
-import com.hooooong.pholar.sign.SigninActivity;
+import com.hooooong.pholar.view.sign.SigninActivity;
 
 
 /**
