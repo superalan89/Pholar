@@ -26,6 +26,7 @@ public class Comment implements Parcelable {
         comment_content = in.readString();
         nickname = in.readString();
         profile_path = in.readString();
+        comment_date = in.readString();
     }
 
     public static final Creator<Comment> CREATOR = new Creator<Comment>() {
@@ -61,5 +62,6 @@ public class Comment implements Parcelable {
         dest.writeString(comment_content);
         dest.writeString(nickname);
         dest.writeString(profile_path);
+        dest.writeString(comment_date);
     }
 }

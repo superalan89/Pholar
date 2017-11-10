@@ -269,7 +269,11 @@ public class PostDAO {
 
     public void updatePost(Post info) {
         postRef.child(info.post_id).setValue(info);
+    }
 
+    public void updateComment(String post_id, int size, Comment comment) {
+//        String commendKey = comment.;
+        postRef.child(post_id).child("comment").child(size+"").setValue(comment);
     }
 
     private void setInnerObject(DataSnapshot dataSnapshot, Post item) {
