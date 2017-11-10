@@ -1,11 +1,12 @@
 package com.hooooong.pholar.view.comment;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,11 +23,11 @@ import com.hooooong.pholar.util.DateUtil;
 import com.hooooong.pholar.view.comment.adapter.CommentRecyclerViewAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentActivity extends AppCompatActivity {
+    private Toolbar toolbar;
     private LinearLayout detailCommentLayout;
     private EditText commentContent;
     private FirebaseUser mUser;
@@ -115,8 +116,25 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         commentContent = findViewById(R.id.comment_content);
 //        detailCommentLayout = findViewById(R.id.detail_comment_layout);
         commentRecyclerView = findViewById(R.id.commentRecyclerView);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
