@@ -28,7 +28,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "Message data payload: " + remoteMessage.getData());
             // 여기서 notification 메세지를 받아 처리
             // getData() 는 Map 형식이기 때문에 key 값을 알아야 사용할 수 있다.
-            sendNotification(remoteMessage.getData().get("type"));
         }
 
         if (remoteMessage.getNotification() != null) {

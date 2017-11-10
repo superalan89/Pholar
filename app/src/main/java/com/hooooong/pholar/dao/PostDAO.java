@@ -24,7 +24,6 @@ import com.hooooong.pholar.model.Comment;
 import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.model.PostThumbnail;
-import com.hooooong.pholar.model.User;
 import com.hooooong.pholar.noti.SendNotification;
 import com.hooooong.pholar.util.DateUtil;
 import com.hooooong.pholar.view.write.listener.WriteListener;
@@ -203,11 +202,9 @@ public class PostDAO {
         userRef.child(post.user.user_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                String token = user.token;
-
+                String token = dataSnapshot.child("token").getValue(String.class);
                 // Like Notification 보내기
-                SendNotification.sendLikeNotification(post.getPhoto().get(0).storage_path, nickName, token);
+                SendNotification.sendLikeNotification(post, nickName, token);
             }
 
             @Override

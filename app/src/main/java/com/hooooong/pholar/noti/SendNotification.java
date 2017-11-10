@@ -2,6 +2,8 @@ package com.hooooong.pholar.noti;
 
 import android.util.Log;
 
+import com.hooooong.pholar.model.Post;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -16,16 +18,17 @@ import retrofit2.Retrofit;
 
 public class SendNotification {
 
-    public static void sendLikeNotification(String imagePath, String nickName, String token){
+    public static void sendLikeNotification(Post post, String nickName, String token){
         Log.e("SendNotification" ,"sendLikeNotification");
-        Log.e("SendNotification" ,"imagePath : "+imagePath);
+        Log.e("SendNotification" ,"imagePath : " + post.getPhoto().get(0).storage_path);
         Log.e("SendNotification" ,"nickName : "+nickName);
         Log.e("SendNotification" ,"token L "+token);
 
         // Body 설정 + "\", \"imagePath\" : \"" +
         String json = "{\"to\": \"" + token + "\", " +
-                "\"imagePath\" : \"" + imagePath +"\"" +
+                "\"imagePath\" : \"" + post.getPhoto().get(0).storage_path +"\"" +
                 ", \"nickName\" : \"" + nickName +
+                ", \"post_id\" : \"" + post.post_id +
                 "\"}";
 
         Log.e("SendNotification" ,"json : " + json);
