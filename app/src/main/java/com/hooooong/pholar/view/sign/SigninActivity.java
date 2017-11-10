@@ -140,10 +140,9 @@ public class SigninActivity extends AppCompatActivity {
 
 //                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
                             // For Test
-                            Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
-
-                            SigninActivity.this.startActivity(intent);
-                            finish();
+//                            Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
+//                            SigninActivity.this.startActivity(intent);
+//                            finish();
                         }
                     }
                 })
@@ -177,7 +176,10 @@ public class SigninActivity extends AppCompatActivity {
                     }
                     Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
                     startActivity(intent);
+
+
                 }
+                finish();
             }
 
             @Override
