@@ -15,8 +15,11 @@
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
         <item name="colorAccent">@color/colorWhite</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <!--<item name="android:windowLightStatusBar">false</item>-->
         <item name="android:windowContentOverlay">@null</item>
     </style>
 

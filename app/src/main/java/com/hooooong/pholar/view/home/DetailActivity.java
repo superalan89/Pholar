@@ -44,10 +44,10 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-//        post_id = getIntent().getStringExtra("post_id");
+        post_id = getIntent().getStringExtra("post_id");
 
         // 테스트
-        post_id = "-KyZJbPkdgh4yKI0cdzF";
+//        post_id = "-KyZJbPkdgh4yKI0cdzF";
 
         initView();
         init();
