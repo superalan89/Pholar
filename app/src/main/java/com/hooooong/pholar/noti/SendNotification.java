@@ -27,7 +27,7 @@ public class SendNotification {
         // Body 설정 + "\", \"imagePath\" : \"" +
         String json = "{\"to\": \"" + token + "\", " +
                 "\"imagePath\" : \"" + post.getPhoto().get(0).storage_path +"\"" +
-                ", \"nickName\" : \"" + nickName +
+                ", \"nickName\" : \"" + nickName +"\"" +
                 ", \"post_id\" : \"" + post.post_id +
                 "\"}";
 

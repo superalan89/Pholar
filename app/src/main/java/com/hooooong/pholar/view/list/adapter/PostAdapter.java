@@ -1,6 +1,7 @@
 package com.hooooong.pholar.view.list.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
@@ -21,6 +22,7 @@ import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.model.User;
 import com.hooooong.pholar.util.DateUtil;
 import com.hooooong.pholar.view.custom.MoreTextView;
+import com.hooooong.pholar.view.home.DetailActivity;
 import com.matthewtamlin.sliding_intro_screen_library.DotIndicator;
 
 import java.util.List;
@@ -72,6 +74,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private View currentView;
+
         private String post_id;
         private MoreTextView textContent;
         private TextView textPostWriter;
@@ -97,6 +101,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         public ViewHolder(final View itemView) {
             super(itemView);
+            currentView = itemView;
             textPostWriter = itemView.findViewById(R.id.textPostWriter);
             textPostDate = itemView.findViewById(R.id.textPostDate);
             imgProfile = itemView.findViewById(R.id.imgProfile);
@@ -120,6 +125,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             imgLike.setOnClickListener(this);
             imgComment.setOnClickListener(this);
             imgShare.setOnClickListener(this);
+            viewPager.setOnClickListener(this);
 
         }
 
@@ -223,6 +229,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 case R.id.imgComment:
                     break;
                 case R.id.imgShare:
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("post_id", post_id);
+                    context.startActivity(intent);
                     break;
             }
         }

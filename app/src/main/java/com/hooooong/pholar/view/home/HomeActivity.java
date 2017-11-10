@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.hooooong.pholar.R;
+import com.hooooong.pholar.util.BottomNavigationViewHelper;
 import com.hooooong.pholar.view.gallery.GalleryActivity;
 import com.hooooong.pholar.view.list.ListFragment;
 import com.hooooong.pholar.view.mypage.MypageFragment;
@@ -26,7 +28,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initView() {
         navigation = findViewById(R.id.navigation);
+        BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, new ListFragment()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -38,13 +43,7 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .add(R.id.frameLayout, new ListFragment())
-                            .commit();
-                    return true;
-                case R.id.navigation_search:
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .add(R.id.frameLayout, new SearchFragment())
+                            .replace(R.id.frameLayout, new ListFragment())
                             .commit();
                     return true;
                 case R.id.navigation_write:
@@ -54,13 +53,13 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_notification:
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .add(R.id.frameLayout, new NotiFragment())
+                            .replace(R.id.frameLayout, new NotiFragment())
                             .commit();
                     return true;
                 case R.id.navigation_mypage:
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .add(R.id.frameLayout, new MypageFragment())
+                            .replace(R.id.frameLayout, new MypageFragment())
                             .commit();
                     return true;
             }
