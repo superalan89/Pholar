@@ -2,10 +2,12 @@ package com.hooooong.pholar.view.sign;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,11 +26,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.model.User;
 import com.hooooong.pholar.view.home.DetailActivity;
@@ -69,6 +74,7 @@ public class SigninActivity extends AppCompatActivity {
                 .build();
         mAuth = FirebaseAuth.getInstance();
         fUser = mAuth.getCurrentUser();
+        userRef = FirebaseDatabase.getInstance().getReference("user");
         SignInButton button = findViewById(R.id.btnLoginGoogle);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +107,7 @@ public class SigninActivity extends AppCompatActivity {
         }
         super.onStart();
     }
-
+    String email, nickname, photo_path;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -113,6 +119,10 @@ public class SigninActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 //Toast.makeText(SigninActivity.this, "아이디 생성이 완료 되었습니다", Toast.LENGTH_SHORT).show();
                 GoogleSignInAccount account = result.getSignInAccount();
+                photo_path = account.getPhotoUrl().toString();
+                email = account.getEmail();
+                nickname = account.getDisplayName();
+
                 firebaseAuthWithGoogle(account);
 //                editor.putString("email", account.getEmail());
 //                editor.commit();
@@ -134,16 +144,20 @@ public class SigninActivity extends AppCompatActivity {
                             Toast.makeText(SigninActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
 
                             fUser = mAuth.getCurrentUser();
-                            if (fUser != null) {
-                                checkUser(fUser);
-                            }
+                            User user = new User();
+                            user.user_id = fUser.getUid();
+                            user.token = FirebaseInstanceId.getInstance().getToken();
+                            user.nickname = nickname;
+                            user.email = email;
+                            user.profile_path = photo_path;
 
-//                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
-                            // For Test
+                            userRef.child(user.user_id).setValue(user);
+
+                            // ----- For Test -----
                             Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
-
                             SigninActivity.this.startActivity(intent);
                             finish();
+                            // --------------------
                         }
                     }
                 })
@@ -154,9 +168,9 @@ public class SigninActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    DatabaseReference userRef;
     private void checkUser(final FirebaseUser fUser) {
-        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user");
+
         userRef.child(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

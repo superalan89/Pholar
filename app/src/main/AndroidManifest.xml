@@ -20,7 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.sign.SignupActivity"/>
         <!-- 사진을 저장하기 위해 파일에 대한 권한 획득 설정 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -39,6 +38,9 @@
         </activity>
         <activity
             android:name=".view.gallery.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.home.DetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.write.WriteActivity"
