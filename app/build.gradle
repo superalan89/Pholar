@@ -43,6 +43,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     // viewpager 도트
     implementation 'com.matthew-tamlin:sliding-intro-screen:2.1.2'
+    // retrofit 추가
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
 }
 
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hooooong.pholar">
-  
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,13 +14,12 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".view.sign.SigninActivity">
-           <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.sign.SignupActivity"/>
         <!-- 사진을 저장하기 위해 파일에 대한 권한 획득 설정 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -30,13 +29,12 @@
             <!-- 프로바이더가 사용하는 파일의 경로 -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"
-                />
+                android:resource="@xml/file_path" />
         </provider>
+
         <activity
             android:name=".view.home.HomeActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.gallery.GalleryActivity"
             android:screenOrientation="portrait" />
@@ -44,6 +42,25 @@
             android:name=".view.write.WriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/WriteTheme" />
+        <activity
+            android:name=".view.home.DetailActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <service
+            android:name=".noti.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".noti.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

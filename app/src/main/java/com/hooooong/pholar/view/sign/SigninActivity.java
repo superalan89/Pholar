@@ -31,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.model.User;
-import com.hooooong.pholar.view.home.DetailActivity;
 import com.hooooong.pholar.view.home.HomeActivity;
 
 public class SigninActivity extends AppCompatActivity {
@@ -132,18 +131,10 @@ public class SigninActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(SigninActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-
                             fUser = mAuth.getCurrentUser();
                             if (fUser != null) {
                                 checkUser(fUser);
                             }
-
-//                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
-                            // For Test
-                            Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
-
-                            SigninActivity.this.startActivity(intent);
-                            finish();
                         }
                     }
                 })
@@ -178,6 +169,7 @@ public class SigninActivity extends AppCompatActivity {
                     Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }
+                finish();
             }
 
             @Override
