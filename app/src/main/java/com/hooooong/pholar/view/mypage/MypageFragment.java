@@ -1,6 +1,7 @@
 package com.hooooong.pholar.view.mypage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.model.PostThumbnail;
+import com.hooooong.pholar.view.sign.SigninActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +51,7 @@ public class MypageFragment extends Fragment {
         f.setArguments(args);
         return f;
     }
+
     String name, path;
     public void readBundle(Bundle bundle) {
         if(bundle != null) {
@@ -58,7 +63,7 @@ public class MypageFragment extends Fragment {
     Context context;
     RecyclerView rv;
     CircleImageView civ_profile;
-    TextView tv_name;
+    TextView tv_name, posting;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,7 +72,18 @@ public class MypageFragment extends Fragment {
         context = container.getContext();
         // setting name and path
         readBundle(getArguments());
+        posting = view.findViewById(R.id.posting);
 
+        ImageButton btn = view.findViewById(R.id.signout_btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(context, SigninActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
         // profile setting
         civ_profile = view.findViewById(R.id.civ_profile);
         if(path != null)
@@ -119,6 +135,7 @@ public class MypageFragment extends Fragment {
                     map.put(thumbnail.post_id, thumbnail);
                 }
                 if(map.size() != 0) {
+                    posting.setText("포스트"+map.size());
                     rv.setLayoutManager(new GridLayoutManager(context, 3));
                 }
                 adapter.dataRefreshing(map);
@@ -129,5 +146,9 @@ public class MypageFragment extends Fragment {
 
             }
         });
+    }
+
+    public interface IFinish {
+        void fin();
     }
 }
