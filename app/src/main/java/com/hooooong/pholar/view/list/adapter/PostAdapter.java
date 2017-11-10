@@ -161,7 +161,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             } else {
                 textCommentCount.setVisibility(View.VISIBLE);
 
-                textCommentCount.setText(commentList.size());
+                textCommentCount.setText(commentList.size()+"");
             }
         }
 
@@ -233,9 +233,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 case R.id.imgShare:
                     break;
             }
-
         }
-
-
     }
 }

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -36,7 +37,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.model.User;
-import com.hooooong.pholar.view.home.DetailActivity;
 import com.hooooong.pholar.view.home.HomeActivity;
 
 public class SigninActivity extends AppCompatActivity {
@@ -47,15 +47,14 @@ public class SigninActivity extends AppCompatActivity {
     public final int RC_SIGN_IN = 12;
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
-
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         // initView();
 
-        sp = getSharedPreferences("sp", MODE_PRIVATE);
-        editor = sp.edit();
+        progressBar = findViewById(R.id.progressBar);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -80,6 +79,9 @@ public class SigninActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -88,34 +90,33 @@ public class SigninActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        if (fUser != null) {
-            checkUser(fUser);
-        } else {
-            mGoogleApiClient.connect();
-            mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                @Override
-                public void onConnected(@Nullable Bundle bundle) {
-                    if (mGoogleApiClient.isConnected()) {
-                        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                    }
+        mGoogleApiClient.connect();
+        mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+                if (mGoogleApiClient.isConnected()) {
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 }
+            }
 
-                @Override
-                public void onConnectionSuspended(int i) {
-                }
-            });
-        }
+            @Override
+            public void onConnectionSuspended(int i) {
+            }
+        });
+
         super.onStart();
     }
     String email, nickname, photo_path;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        progressBar.setVisibility(View.VISIBLE);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
+
                 // Google Sign In was successful, authenticate with Firebase
                 //Toast.makeText(SigninActivity.this, "아이디 생성이 완료 되었습니다", Toast.LENGTH_SHORT).show();
                 GoogleSignInAccount account = result.getSignInAccount();
@@ -129,7 +130,9 @@ public class SigninActivity extends AppCompatActivity {
             } else {
                 // Google Sign In failed, update UI appropriately
                 // ...
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(SigninActivity.this, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -154,7 +157,7 @@ public class SigninActivity extends AppCompatActivity {
                             userRef.child(user.user_id).setValue(user);
 
                             // ----- For Test -----
-                            Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
+                            Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
                             SigninActivity.this.startActivity(intent);
                             finish();
                             // --------------------
@@ -164,40 +167,11 @@ public class SigninActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        ProgressBar progressBar = findViewById(R.id.progressBar);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
     }
     DatabaseReference userRef;
-    private void checkUser(final FirebaseUser fUser) {
-
-        userRef.child(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    User user = new User();
-                    user.user_id = fUser.getUid();
-                    user.email = fUser.getEmail();
-
-                    userRef.child(fUser.getUid()).setValue(user);
-                    Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                } else {
-                    String nickname = "";
-                    for (DataSnapshot item : dataSnapshot.getChildren()) {
-                        if ("nickname".equals(item.getKey())) {
-                            nickname = (String) item.getValue();
-                        }
-                    }
-                    Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
 }
 
