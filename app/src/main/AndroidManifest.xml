@@ -46,11 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.home.DetailActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
         <service
             android:name=".noti.MyFirebaseMessagingService">
             <intent-filter>

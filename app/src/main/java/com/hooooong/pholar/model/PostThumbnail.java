@@ -7,6 +7,7 @@ package com.hooooong.pholar.model;
 public class PostThumbnail {
     public String first_pic_path;
     public String count_picture;
+    public String post_id;
 
     @Override
     public String toString() {
