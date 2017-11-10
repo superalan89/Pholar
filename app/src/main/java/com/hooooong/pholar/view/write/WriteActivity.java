@@ -1,5 +1,6 @@
 package com.hooooong.pholar.view.write;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -80,7 +82,7 @@ public class WriteActivity extends AppCompatActivity implements WriteListener {
      */
     private void setImageLayout() {
         photoViewList = new ArrayList<>(photoList.size());
-        for(int i = 0 ; i<photoList.size(); i++){
+        for (int i = 0; i < photoList.size(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.item_write_photo, null);
             ImageView photoView = view.findViewById(R.id.photoView);
 
@@ -108,16 +110,17 @@ public class WriteActivity extends AppCompatActivity implements WriteListener {
                 postWrite();
                 break;
             case android.R.id.home:
-                DialogUtil.exitDialog("포스팅을 중단하시겠어요?", "현재 작성하고 계신 포스트는 다시 작성해야 할지도 몰라요.",this,true );
+                DialogUtil.exitDialog("포스팅을 중단하시겠어요?", "현재 작성하고 계신 포스트는 다시 작성해야 할지도 몰라요.", this, true);
                 break;
         }
-       return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     /**
      * POST 작성
      */
     private void postWrite() {
+        checkShowKeyboard();
         progressBarLayout.setVisibility(View.VISIBLE);
 
         /**
@@ -139,7 +142,7 @@ public class WriteActivity extends AppCompatActivity implements WriteListener {
         /**
          * Photo Comment 담기
          */
-        for(int i = 0 ; i< photoViewList.size(); i++){
+        for (int i = 0; i < photoViewList.size(); i++) {
             EditText editPhotoComment = photoViewList.get(i).findViewById(R.id.editPhotoComment);
             String photoComment = editPhotoComment.getText().toString();
             photoList.get(i).photo_explain = photoComment;
@@ -152,16 +155,23 @@ public class WriteActivity extends AppCompatActivity implements WriteListener {
         /**
          * 글 작성
          */
-        PostDAO.getInstance().create(this,"photo",firebaseUser.getUid(), info);
+        PostDAO.getInstance().create(this, "photo", firebaseUser.getUid(), info);
+    }
+
+    /**
+     * 키보드 지우는 메소드
+     */
+    private void checkShowKeyboard() {
+        InputMethodManager Keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        Keyboard.hideSoftInputFromWindow(editContent.getWindowToken(), 0);
     }
 
     /**
      * 뒤로가기 버튼 재정의
-     *
      */
     @Override
     public void onBackPressed() {
-        DialogUtil.exitDialog("포스팅을 중단하시겠어요?", "현재 작성하고 계신 포스트는 다시 작성해야 할지도 몰라요.",this,true );
+        DialogUtil.exitDialog("포스팅을 중단하시겠어요?", "현재 작성하고 계신 포스트는 다시 작성해야 할지도 몰라요.", this, true);
     }
 
 

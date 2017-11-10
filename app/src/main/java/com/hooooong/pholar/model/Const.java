@@ -7,4 +7,5 @@ package com.hooooong.pholar.model;
 public class Const {
 
     public static final String INTENT_PHOTO_LIST = "PhotoList";
+    public static final int NEW_PHOTO_COUNT = 5;
 }

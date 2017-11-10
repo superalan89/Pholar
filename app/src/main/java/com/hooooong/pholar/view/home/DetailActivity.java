@@ -65,7 +65,6 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
 
         post_id = getIntent().getStringExtra("post_id");
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-
         initView();
         init();
     }

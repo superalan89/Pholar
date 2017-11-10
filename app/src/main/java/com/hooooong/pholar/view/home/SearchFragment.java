@@ -101,7 +101,6 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
         Log.e(TAG, "Single getUserFromFirebaseDB: " + item.toString());
         PostThumbnail postThumbnail = item.getPost_thumbnail().get(0);
 
-        Log.e("heepie", postThumbnail.count_picture + postThumbnail.first_pic_path + postThumbnail.post_id);
 
     }
 }
