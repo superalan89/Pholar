@@ -12,14 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SigninActivity">
+        <activity android:name=".view.sign.SigninActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" />
         <!-- 사진을 저장하기 위해 파일에 대한 권한 획득 설정 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -43,7 +42,10 @@
             android:name=".view.write.WriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/WriteTheme" />
-        <activity android:name=".view.home.DetailActivity"></activity>
+        <activity
+            android:name=".view.home.DetailActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.comment.CommentActivity"></activity>
     </application>
 
 </manifest>

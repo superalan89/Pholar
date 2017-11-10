@@ -11,7 +11,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:name="com.hooooong.pholar.view.home.ListFragment"
+        android:name="com.hooooong.pholar.view.list.ListFragment"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

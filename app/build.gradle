@@ -41,7 +41,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     //Circle Image 라이브러리
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    // viewpager 도트
+    implementation 'com.matthew-tamlin:sliding-intro-screen:2.1.2'
 }
+
 
 
 

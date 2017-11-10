@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.hooooong.pholar.R;
+import com.hooooong.pholar.util.BottomNavigationViewHelper;
 import com.hooooong.pholar.view.gallery.GalleryActivity;
+import com.hooooong.pholar.view.list.ListFragment;
+import com.hooooong.pholar.view.mypage.MypageFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -24,7 +27,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initView() {
         navigation = findViewById(R.id.navigation);
+        BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

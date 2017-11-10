@@ -1,7 +1,6 @@
 package com.hooooong.pholar.model;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
@@ -15,6 +14,7 @@ public class User {
     public String status_msg;
     public String phone_number;
     public String profile_path;
+
     public String email;
     public String token;
 

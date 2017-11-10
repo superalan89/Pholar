@@ -22,6 +22,7 @@ import com.hooooong.pholar.dao.PostDAO;
 import com.hooooong.pholar.model.Const;
 import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
+import com.hooooong.pholar.model.User;
 import com.hooooong.pholar.util.DateUtil;
 import com.hooooong.pholar.util.DialogUtil;
 import com.hooooong.pholar.view.write.listener.WriteListener;
@@ -86,6 +87,7 @@ public class WriteActivity extends AppCompatActivity implements WriteListener {
             Glide.with(this)
                     .load(photoList.get(i).getImgPath())
                     .into(photoView);
+
             photoLayout.addView(view);
             photoViewList.add(view);
         }
@@ -121,13 +123,18 @@ public class WriteActivity extends AppCompatActivity implements WriteListener {
         /**
          * Post 정보 생성
          */
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
         Post info = new Post();
         info.date = DateUtil.currentYMDHMSDate();
         info.post_content = editContent.getText().toString();
 
         // 회원 이름 넣기 (수정해야한다.)
-        info.writer = "이흥기";
+        User user = new User();
+        user.user_id = firebaseUser.getUid();
+        user.nickname = firebaseUser.getDisplayName();
+        user.profile_path = firebaseUser.getPhotoUrl().toString();
+
+        info.user = user;
 
         /**
          * Photo Comment 담기
@@ -145,7 +152,7 @@ public class WriteActivity extends AppCompatActivity implements WriteListener {
         /**
          * 글 작성
          */
-        PostDAO.getInstance().create(this,"photo",user.getUid(), info);
+        PostDAO.getInstance().create(this,"photo",firebaseUser.getUid(), info);
     }
 
     /**

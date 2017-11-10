@@ -1,4 +1,4 @@
-package com.hooooong.pholar.view.home;
+package com.hooooong.pholar.view.list.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -16,13 +16,13 @@ import java.util.List;
  * 새로운 글을 보여주는 Viewpager의 Adapter
  */
 
-public class NewWriteViewPagerAdapter extends PagerAdapter {
+public class NewPostAdapter extends PagerAdapter {
     private final String TAG = getClass().getSimpleName();
 
     private Context context;
     private List<String> data;
 
-    public NewWriteViewPagerAdapter(Context context, List<String> data) {
+    public NewPostAdapter(Context context, List<String> data) {
         this.context = context;
         this.data = data;
     }

@@ -178,7 +178,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.PhotoVie
             Glide.with(context)
                     .load(path)
                     .centerCrop()
-                    .crossFade()
                     .into(imgPhoto);
         }
 

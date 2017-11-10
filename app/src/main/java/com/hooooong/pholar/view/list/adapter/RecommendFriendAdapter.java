@@ -1,4 +1,4 @@
-package com.hooooong.pholar.view.home;
+package com.hooooong.pholar.view.list.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -15,13 +15,13 @@ import java.util.List;
  * Created by Heepie on 2017. 11. 7..
  */
 
-public class RecommendFriendViewPagerAdapter extends PagerAdapter {
+public class RecommendFriendAdapter extends PagerAdapter {
     private final String TAG = getClass().getSimpleName();
 
     Context context;
     List<String> data;
 
-    public RecommendFriendViewPagerAdapter(Context context, List<String> data) {
+    public RecommendFriendAdapter(Context context, List<String> data) {
         this.context = context;
         this.data = data;
     }
