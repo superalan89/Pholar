@@ -30,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.model.User;
-import com.hooooong.pholar.sign.SignupActivity;
 import com.hooooong.pholar.view.home.HomeActivity;
 public class SigninActivity extends AppCompatActivity {
     // private Button btnLoginFacebook;
@@ -101,7 +100,7 @@ public class SigninActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
-                Toast.makeText(SigninActivity.this, "아이디 생성이 완료 되었습니다", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SigninActivity.this, "아이디 생성이 완료 되었습니다", Toast.LENGTH_SHORT).show();
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
 //                editor.putString("email", account.getEmail());
@@ -144,8 +143,9 @@ public class SigninActivity extends AppCompatActivity {
                     User user = new User();
                     user.user_id = fUser.getUid();
                     user.email = fUser.getEmail();
+
                     userRef.child(fUser.getUid()).setValue(user);
-                    Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
+                    Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
                     startActivity(intent);
                 } else {
                     String nickname = "";
@@ -154,14 +154,8 @@ public class SigninActivity extends AppCompatActivity {
                             nickname = (String) item.getValue();
                         }
                     }
-
-                    if( nickname == null || "".equals(nickname) ) {
-                        Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
+                    startActivity(intent);
                 }
             }
             @Override
