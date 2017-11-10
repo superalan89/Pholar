@@ -147,12 +147,12 @@ public class SigninActivity extends AppCompatActivity {
                             user.email = email;
                             user.profile_path = photo_path;
 
-                            userRef.child(user.user_id).setValue(user);
+                            checkUser(user);
 
                             // ----- For Test -----
-                            Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
-                            SigninActivity.this.startActivity(intent);
-                            finish();
+//                            Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
+//                            SigninActivity.this.startActivity(intent);
+//                            finish();
                             // --------------------
 
                         }
@@ -168,30 +168,18 @@ public class SigninActivity extends AppCompatActivity {
     }
     DatabaseReference userRef;
 
-    private void checkUser(final FirebaseUser fUser) {
+    private void checkUser(final User user) {
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user");
-        userRef.child(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.child(user.user_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
-                    User user = new User();
-                    user.user_id = fUser.getUid();
-                    user.email = fUser.getEmail();
-
-                    userRef.child(fUser.getUid()).setValue(user);
+                    userRef.child(user.user_id).setValue(user);
                     Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
                     startActivity(intent);
                 } else {
-                    String nickname = "";
-                    for (DataSnapshot item : dataSnapshot.getChildren()) {
-                        if ("nickname".equals(item.getKey())) {
-                            nickname = (String) item.getValue();
-                        }
-                    }
                     Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
                     startActivity(intent);
-
-
                 }
                 finish();
             }
