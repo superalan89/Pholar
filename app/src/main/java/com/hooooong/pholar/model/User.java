@@ -15,7 +15,6 @@ public class User {
     public String status_msg;
     public String phone_number;
     public String profile_path;
-    public String email;
 
     public List<PostThumbnail> post_thumbnail;
 

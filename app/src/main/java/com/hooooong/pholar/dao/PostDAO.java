@@ -18,6 +18,7 @@ import com.hooooong.pholar.model.Comment;
 import com.hooooong.pholar.model.Like;
 import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
+import com.hooooong.pholar.model.User;
 import com.hooooong.pholar.util.FirebaseUtil;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -148,6 +150,7 @@ public class PostDAO {
                     Log.d(TAG, "read: " + item);
                 }
 
+                Collections.reverse(data);
                 callback.getPostFromFirebaseDB(data);
             }
 
@@ -159,7 +162,7 @@ public class PostDAO {
     }
 
     // 글 ID를 통해 글 읽어오는 메소드
-    /*public void readByPostId(final ICallback callback, String post_id) {
+    public void readByPostId(final ICallback callback, String post_id) {
 
         Query getSinglePost = postRef.child(post_id);
 
@@ -183,7 +186,7 @@ public class PostDAO {
 
             }
         });
-    }*/
+    }
 
     private void setInnerObject(DataSnapshot dataSnapshot, Post item) {
         if (dataSnapshot.hasChild("photo")) {

@@ -13,6 +13,7 @@ public class Post {
     public String date;
     public String post_content;
     public String writer;
+    public User user;
 
     public List<Photo> photo;
     public List<Comment> comment;
