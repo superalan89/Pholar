@@ -145,7 +145,6 @@ public class SigninActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(SigninActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-
                             fUser = mAuth.getCurrentUser();
                             User user = new User();
                             user.user_id = fUser.getUid();
@@ -161,6 +160,7 @@ public class SigninActivity extends AppCompatActivity {
                             SigninActivity.this.startActivity(intent);
                             finish();
                             // --------------------
+
                         }
                     }
                 })
@@ -173,5 +173,36 @@ public class SigninActivity extends AppCompatActivity {
                 });
     }
     DatabaseReference userRef;
+    private void checkUser(final FirebaseUser fUser) {
+        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user");
+        userRef.child(fUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    User user = new User();
+                    user.user_id = fUser.getUid();
+                    user.email = fUser.getEmail();
+
+                    userRef.child(fUser.getUid()).setValue(user);
+                    Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    String nickname = "";
+                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+                        if ("nickname".equals(item.getKey())) {
+                            nickname = (String) item.getValue();
+                        }
+                    }
+                    Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                }
+                finish();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
 }
 

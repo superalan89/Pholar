@@ -5,9 +5,13 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hooooong.pholar.R;
+import com.hooooong.pholar.model.Const;
+import com.hooooong.pholar.model.Post;
 
 import java.util.List;
 
@@ -20,26 +24,32 @@ public class NewPostAdapter extends PagerAdapter {
     private final String TAG = getClass().getSimpleName();
 
     private Context context;
-    private List<String> data;
+    private List<Post> data;
 
-    public NewPostAdapter(Context context, List<String> data) {
+    public NewPostAdapter(Context context, List<Post> data) {
         this.context = context;
         this.data = data;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = LayoutInflater.from(context)
-                                  .inflate(R.layout.each_new_write, null);
+        position %= Const.NEW_PHOTO_COUNT;
+        View view = LayoutInflater.from(context).inflate(R.layout.item_post_newphoto, null);
+        ImageView imgNewPhoto = view.findViewById(R.id.imgNewPhoto);
+        TextView textPhotoComment = view.findViewById(R.id.textPhotoComment);
+        TextView textPostWriter = view.findViewById(R.id.textPostWriter);
 
-        String title = data.get(position);
+        Post post = data.get(position);
 
-        TextView textTitle = view.findViewById(R.id.each_new_write_title);
+        Glide.with(context).load( post.getPhoto().get(0).storage_path).centerCrop().into(imgNewPhoto);
 
-        textTitle.setText(title);
-
+        if(post.getPhoto().get(0).photo_explain != null && post.getPhoto().get(0).photo_explain.length() != 0){
+            textPhotoComment.setText(post.getPhoto().get(0).photo_explain);
+        }else{
+            textPhotoComment.setText(post.user.nickname+" 님의 사진");
+        }
+        textPostWriter.setText(post.user.nickname);
         container.addView(view);
-
         return view;
     }
 
@@ -47,7 +57,7 @@ public class NewPostAdapter extends PagerAdapter {
     public int getCount() {
         if (data == null)
             return 0;
-        return data.size();
+        return Const.NEW_PHOTO_COUNT*3;
     }
 
     @Override
@@ -60,5 +70,3 @@ public class NewPostAdapter extends PagerAdapter {
         container.removeView((View)object);
     }
 }
-
-
