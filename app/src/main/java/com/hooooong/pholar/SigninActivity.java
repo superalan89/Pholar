@@ -125,9 +125,9 @@ public class SigninActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(SigninActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
 
-//                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
+                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
                             // For Test
-                            Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
+//                            Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
                             SigninActivity.this.startActivity(intent);
                             finish();
                         }

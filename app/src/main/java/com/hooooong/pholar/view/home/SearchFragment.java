@@ -44,8 +44,8 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
         initDataFromFirebaseDB();
 
         // 테스트: post_id로 검색
-//        postDAO.readByPostId(this, "-KyUKr9SjWJkV9FD5vIt");
-        userDAO.readByUserId(this, "user_qerdfsers");
+        postDAO.readByPostId(this, "-KyZJbPkdgh4yKI0cdzF");
+//        userDAO.readByUserId(this, "user_qerdfsers");
 
         Toast.makeText(view.getContext(), "Test", Toast.LENGTH_SHORT).show();
         return view;
@@ -82,8 +82,10 @@ public class SearchFragment extends android.support.v4.app.Fragment implements P
     public void getSinglePostFromFirebaseDB(Post item) {
         // Screen에 반영
         Log.e(TAG, "Single getPostFromFirebaseDB: " + item.toString());
-        Photo p = item.getPhoto().get(0);
-//        Log.e("heepie", p.imgPath + p.photo_explain + p.storage_path);
+
+
+//        Photo p = item.getPhoto().get(0);
+        Log.e("heepie", item.user.toString());
     }
 
     @Override

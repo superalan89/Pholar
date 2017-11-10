@@ -18,6 +18,7 @@ import com.hooooong.pholar.model.Comment;
 import com.hooooong.pholar.model.Like;
 import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
+import com.hooooong.pholar.model.User;
 import com.hooooong.pholar.util.FirebaseUtil;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -223,6 +224,9 @@ public class PostDAO {
             }
 
             item.setLike(list);
+        } else if (dataSnapshot.hasChild("user")) {
+            User user = dataSnapshot.getValue(User.class);
+            item.user = user;
         }
     }
 
