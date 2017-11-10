@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -189,7 +190,9 @@ public class PostDAO {
                                    DataSnapshot dataSnapshot) {
                 if(likeStatus){
                     Post post = dataSnapshot.getValue(Post.class);
-                    getUserToken(post, user.getDisplayName());
+                    if(!post.post_id.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        getUserToken(post, user.getDisplayName());
+                    }
                     likeStatus = false;
                 }
                 // Notification 을 날려준다.
