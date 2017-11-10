@@ -45,12 +45,10 @@ public class CommentActivity extends AppCompatActivity {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         postDAO = PostDAO.getInstance();
         initView();
-//        ArrayList<String> commentList = getIntent();
+
         commentArrayList = getIntent().getParcelableArrayListExtra("commentList");
         commentLength = commentArrayList.size();
         post_id = getIntent().getStringExtra("post_id");
-
-//        setCommentToView(commentArrayList);
 
         adapter = new CommentRecyclerViewAdapter();
         adapter.setDataAndRefresh(commentArrayList);

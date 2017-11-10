@@ -85,14 +85,13 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/comment_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?android:actionBarSize"
+                android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
                 app:contentInsetRight="0dp"
                 app:contentInsetStart="0dp"
                 >
-                <!--TODO REPLACE PREVIOUS LINE WITH YOUR OWN BEHAVIOUR -->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -101,11 +100,13 @@
 
                     <EditText
                         android:id="@+id/comment_content"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="4"
                         android:hint="댓글을 달아주세요!"
                         android:textColor="@color/colorBlack"
+                        android:scrollbars="vertical"
+                        android:maxLines="4"
                         />
 
                     <Button
