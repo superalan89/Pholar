@@ -88,26 +88,26 @@ public class PostDAO {
             storageRef.child(path)                                                                  // photo
                     .child(uid)                                                                     //  ㄴ  개인 ID
                     .child(DateUtil.currentYMDDate())                                               //       ㄴ  20171212
-                    .child(System.currentTimeMillis()+"")                                           //              ㄴ currentSystem.png
+                    .child(System.currentTimeMillis() + "")                                           //              ㄴ currentSystem.png
                     .putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             info.getPhoto().get(j).storage_path = taskSnapshot.getDownloadUrl().toString();
                             count++;
-                            if(count == info.getPhoto().size()){
+                            if (count == info.getPhoto().size()) {
                                 uploadDataBase(listener, info);
                                 Log.e("PostDAO", "create() 작업 성공");
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // 실패작업
-                            Log.e("PostDAO", "create() 작업 실패");
-                            listener.failPost();
-                        }
-                    });
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // 실패작업
+                    Log.e("PostDAO", "create() 작업 실패");
+                    listener.failPost();
+                }
+            });
         }
     }
 
@@ -129,12 +129,12 @@ public class PostDAO {
                         count = 0;
                     }
                 }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // 실패작업
-                        listener.failPost();
-                    }
-                });
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // 실패작업
+                listener.failPost();
+            }
+        });
 
         PostThumbnail postThumbnail = new PostThumbnail();
         postThumbnail.count_picture = Integer.toString(info.getPhoto().size());
@@ -161,18 +161,18 @@ public class PostDAO {
                     return Transaction.success(mutableData);
                 }
 
-                if(post.like != null){
+                if (post.like != null) {
                     // 좋아요가 있고,
-                    if(post.like.containsKey(user.getUid())){
+                    if (post.like.containsKey(user.getUid())) {
 
                         // 자신이 누른게 있으면
                         post.like.remove(user.getUid());
-                    }else{
+                    } else {
                         // 자신이 누른게 없으면
                         likeStatus = true;
                         post.like.put(user.getUid(), true);
                     }
-                }else{
+                } else {
                     // 좋아요가 없고
                     likeStatus = true;
                     Map<String, Boolean> likeMap = new HashMap<>();
@@ -180,7 +180,7 @@ public class PostDAO {
                     post.like = likeMap;
                 }
 
-               // Set value and report transaction success
+                // Set value and report transaction success
                 mutableData.setValue(post);
                 return Transaction.success(mutableData);
             }
@@ -188,9 +188,9 @@ public class PostDAO {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b,
                                    DataSnapshot dataSnapshot) {
-                if(likeStatus){
+                if (likeStatus) {
                     Post post = dataSnapshot.getValue(Post.class);
-                    if(!post.post_id.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                    if (!post.user.user_id.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         getUserToken(post, user.getDisplayName());
                     }
                     likeStatus = false;
@@ -200,14 +200,14 @@ public class PostDAO {
         });
     }
 
-    private void getUserToken(final Post post, final String nickName){
+    private void getUserToken(final Post post, final String nickName) {
         // 1. UserId 의 Token 값을 가져온다.
         userRef.child(post.user.user_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String token = dataSnapshot.child("token").getValue(String.class);
                 // Like Notification 보내기
-                SendNotification.sendLikeNotification(post, nickName, token);
+                SendNotification.sendLikeNotification(post.post_id, nickName, token);
             }
 
             @Override
@@ -274,9 +274,43 @@ public class PostDAO {
         postRef.child(info.post_id).setValue(info);
     }
 
-    public void updateComment(String post_id, int size, Comment comment) {
-//        String commendKey = comment.;
-        postRef.child(post_id).child("comment").child(size+"").setValue(comment);
+    public void updateComment(final String post_id, final int size, final Comment comment) {
+        postRef.child(post_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String user_id = dataSnapshot.child("user").child("user_id").getValue(String.class);
+                userRef.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final String token = dataSnapshot.child("token").getValue(String.class);
+
+                        postRef.child(post_id).child("comment").child(size + "").setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (!post_id.equals(user.getUid())) {
+                                    SendNotification.sendCommentNotification(post_id, user.getDisplayName(), token);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     private void setInnerObject(DataSnapshot dataSnapshot, Post item) {
@@ -285,7 +319,7 @@ public class PostDAO {
 
             List<Photo> list = new ArrayList<>();
 
-            for(DataSnapshot data : photoSnapshot.getChildren()){
+            for (DataSnapshot data : photoSnapshot.getChildren()) {
                 Photo photo = data.getValue(Photo.class);
                 list.add(photo);
             }
@@ -294,7 +328,7 @@ public class PostDAO {
             DataSnapshot photoSnapshot = dataSnapshot.child("comment");
             List<Comment> list = new ArrayList<>();
 
-            for(DataSnapshot data : photoSnapshot.getChildren()){
+            for (DataSnapshot data : photoSnapshot.getChildren()) {
                 Comment comment = data.getValue(Comment.class);
                 list.add(comment);
             }
