@@ -178,17 +178,16 @@
             android:id="@+id/likeLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="8dp">
+            android:layout_marginLeft="5dp">
 
             <ImageView
                 android:id="@+id/imgLike"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"

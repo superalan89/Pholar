@@ -17,5 +17,8 @@ public interface IRetro {
     // ex) @GET("sendNotification), @Query String post_data
     // sendNotification?post_data;
     @POST("sendLikeNotification")
-    Call<ResponseBody> sendNotification(@Body RequestBody post_data);
+    Call<ResponseBody> sendLikeNotification(@Body RequestBody post_data);
+
+    @POST("sendCommentNotification")
+    Call<ResponseBody> sendCommentNotification(@Body RequestBody post_data);
 }

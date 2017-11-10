@@ -107,7 +107,7 @@ public class CommentActivity extends AppCompatActivity {
             comment.comment_content = comment_content;
             comment.comment_date = DateUtil.currentYMDHMSDate();
 
-            postDAO.updateComment(post_id, commentLength++, comment);
+            postDAO.updateComment(post_id,commentLength++, comment);
 
             commentArrayList.add(comment);
             adapter.setDataAndRefresh(commentArrayList);
