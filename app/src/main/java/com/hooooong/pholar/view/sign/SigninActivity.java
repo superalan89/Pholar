@@ -195,6 +195,8 @@ public class SigninActivity extends AppCompatActivity {
                     }
                     Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
                     startActivity(intent);
+
+
                 }
                 finish();
             }

@@ -39,6 +39,7 @@
             android:name=".view.write.WriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/WriteTheme" />
+        <activity android:name=".view.comment.CommentActivity"/>
         <activity android:name=".view.sign.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

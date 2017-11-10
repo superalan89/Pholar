@@ -1,5 +1,6 @@
 package com.hooooong.pholar.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,12 @@ public class Post {
     public List<Photo> photo;
     public List<Comment> comment;
     public Map<String, Boolean> like;
-  
+
+    public Post() {
+        photo = new ArrayList<>();
+        comment = new ArrayList<>();
+    }
+
     public List<Photo> getPhoto() {
         return photo;
     }
