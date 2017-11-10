@@ -14,23 +14,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.hooooong.pholar.model.Comment;
 import com.hooooong.pholar.model.Like;
 import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
-import com.hooooong.pholar.model.User;
-import com.hooooong.pholar.util.FirebaseUtil;
-
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.google.gson.Gson;
-import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.util.DateUtil;
 import com.hooooong.pholar.view.write.listener.WriteListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
