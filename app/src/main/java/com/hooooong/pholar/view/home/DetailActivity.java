@@ -53,6 +53,7 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
     private FirebaseUser mUser;
     private TextView textLikeCount;
     private TextView textCommentCount;
+    private ImageView imgLike;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +73,20 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
             mUser = FirebaseAuth.getInstance().getCurrentUser();
             initView();
             init();
+            initListener();
         }
         initView();
     }
+
+    private void initListener() {
+        imgLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PostDAO.getInstance().onLikeClick(post_id, FirebaseAuth.getInstance().getCurrentUser());
+            }
+        });
+    }
+
 
     private void init() {
         postDAO = PostDAO.getInstance();
@@ -189,6 +201,7 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
         commentDate = findViewById(R.id.comment_date);
         textLikeCount = findViewById(R.id.detail_textLikeCount);
         textCommentCount = findViewById(R.id.detail_textCommentCount);
+        imgLike = (ImageView) findViewById(R.id.imgLike);
     }
 
     public void goCommentActivity(View view) {
