@@ -1,6 +1,7 @@
 package com.hooooong.pholar.model;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
@@ -12,11 +13,11 @@ public class Post {
     public String post_id;
     public String date;
     public String post_content;
-    public String writer;
+    public User user;
 
     public List<Photo> photo;
     public List<Comment> comment;
-    public List<Like> like;
+    public Map<String, Boolean> like;
   
     public List<Photo> getPhoto() {
         return photo;
@@ -33,14 +34,14 @@ public class Post {
     public void setComment(List<Comment> comment) {
         this.comment = comment;
     }
-
+/*
     public List<Like> getLike() {
         return like;
     }
 
     public void setLike(List<Like> like) {
         this.like = like;
-    }
+    }*/
 }
 
 

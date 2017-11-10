@@ -7,4 +7,5 @@
     <string name="title_write">글작성</string>
     <string name="dialog_cancel">취소</string>
     <string name="dialog_ok">확인</string>
+    <string name="more">더보기</string>
 </resources>
