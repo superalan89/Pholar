@@ -87,7 +87,7 @@ public class CommentActivity extends AppCompatActivity {
 
         textCommentId.setText(comment.nickname);
         textCommentContext.setText(comment.comment_content);
-        textCommentDate.setText(comment.comment_date);
+        textCommentDate.setText(DateUtil.calculateTime(comment.comment_date));
         Glide.with(this)
                 .load(comment.profile_path)
                 .into(imageCommentProfile);

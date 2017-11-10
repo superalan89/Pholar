@@ -9,11 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -123,7 +121,7 @@ public class MypageFragment extends Fragment {
         userRef = database.getReference("user");
 
         //TODO child 자리에 user uid 값 들어가야 한다!
-        userRef.child("xWxHOdz9FcM4I3sbCKf5ubj5pWW2").child("post_thumbnail").addValueEventListener(new ValueEventListener() {
+        userRef.child(mAuth.getCurrentUser().getUid()).child("post_thumbnail").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 map = new HashMap<>();
