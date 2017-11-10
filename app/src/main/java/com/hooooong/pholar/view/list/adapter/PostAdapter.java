@@ -23,10 +23,12 @@ import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.model.User;
 import com.hooooong.pholar.util.DateUtil;
+import com.hooooong.pholar.view.comment.CommentActivity;
 import com.hooooong.pholar.view.custom.MoreTextView;
 import com.hooooong.pholar.view.home.DetailActivity;
 import com.matthewtamlin.sliding_intro_screen_library.DotIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -168,7 +170,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView textCommentCount;
         private ImageView imgShare;
         private PostPhotoAdapter postPhotoAdapter;
-
+        private List<Comment> commentList;
 
         private ViewPager viewPager;
         private DotIndicator indicator;
@@ -232,6 +234,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void setComment(List<Comment> commentList) {
+            this.commentList = commentList;
             if (commentList == null || commentList.size() == 0) {
                 textCommentCount.setVisibility(View.INVISIBLE);
             } else {
@@ -304,11 +307,17 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     PostDAO.getInstance().onLikeClick(post_id, FirebaseAuth.getInstance().getCurrentUser());
                     break;
                 case R.id.imgComment:
+
+                    Intent commentIntent = new Intent(context, CommentActivity.class);
+                    commentIntent.putParcelableArrayListExtra("commentList", new ArrayList<Comment>(commentList));
+                    commentIntent.putExtra("post_id", post_id);
+                    context.startActivity(commentIntent);
+
                     break;
                 case R.id.imgShare:
-                    Intent intent = new Intent(context, DetailActivity.class);
-                    intent.putExtra("post_id", post_id);
-                    context.startActivity(intent);
+                    Intent shareIntent = new Intent(context, DetailActivity.class);
+                    shareIntent.putExtra("post_id", post_id);
+                    context.startActivity(shareIntent);
                     break;
             }
         }
