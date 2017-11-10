@@ -6,25 +6,16 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/icon_home"
         android:title="" />
-
-    <item
-        android:id="@+id/navigation_search"
-        android:icon="@drawable/icon_search"
-        android:title="" />
-
     <item
         android:id="@+id/navigation_write"
         android:icon="@drawable/icon_post"
         android:title="" />
-
     <item
         android:id="@+id/navigation_notification"
         android:icon="@drawable/icon_notify"
         android:title="" />
-
     <item
         android:id="@+id/navigation_mypage"
         android:icon="@drawable/icon_mypage"
         android:title="" />
-
 </menu>

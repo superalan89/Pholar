@@ -306,7 +306,6 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 case R.id.imgComment:
                     break;
                 case R.id.imgShare:
-                    Log.e("heepie2", "Clicked");
                     Intent intent = new Intent(context, DetailActivity.class);
                     intent.putExtra("post_id", post_id);
                     context.startActivity(intent);
