@@ -1,17 +1,16 @@
 package com.hooooong.pholar.view.list.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,9 +22,9 @@ import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.model.User;
 import com.hooooong.pholar.util.DateUtil;
 import com.hooooong.pholar.view.custom.MoreTextView;
+import com.hooooong.pholar.view.home.DetailActivity;
 import com.matthewtamlin.sliding_intro_screen_library.DotIndicator;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +74,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private View currentView;
+
         private String post_id;
         private MoreTextView textContent;
         private TextView textPostWriter;
@@ -100,6 +101,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         public ViewHolder(final View itemView) {
             super(itemView);
+            currentView = itemView;
             textPostWriter = itemView.findViewById(R.id.textPostWriter);
             textPostDate = itemView.findViewById(R.id.textPostDate);
             imgProfile = itemView.findViewById(R.id.imgProfile);
@@ -123,6 +125,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             imgLike.setOnClickListener(this);
             imgComment.setOnClickListener(this);
             imgShare.setOnClickListener(this);
+            viewPager.setOnClickListener(this);
 
         }
 
@@ -157,33 +160,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         void setComment(List<Comment> commentList) {
             if (commentList == null || commentList.size() == 0) {
-                textCommentCount.setVisibility(View.GONE);
+                textCommentCount.setVisibility(View.INVISIBLE);
             } else {
                 textCommentCount.setVisibility(View.VISIBLE);
-
-                textCommentCount.setText(commentList.size());
+                textCommentCount.setText(commentList.size()+"");
             }
         }
 
         void setLike(Map<String, Boolean> likeList) {
             if (likeList == null || likeList.size() == 0) {
-                textLikeCount.setVisibility(View.GONE);
+                // Like 가 아예 없으면
+
+                textLikeCount.setVisibility(View.INVISIBLE);
                 imgLike.setImageResource(R.drawable.ic_favorite_border);
             } else {
+                // Like 가 있으면
                 textLikeCount.setVisibility(View.VISIBLE);
-
                 textLikeCount.setText(likeList.size()+ "");
 
-                Iterator<String> ids = likeList.keySet().iterator();
-
-                while (ids.hasNext()) {
-                    Log.e("뿌", "뿌");
-                    String id = ids.next();
-                    if (likeList.containsKey(id)) {
-                        imgLike.setImageResource(R.drawable.ic_favorite);
-                    }else{
-                        imgLike.setImageResource(R.drawable.ic_favorite_border);
-                    }
+                // 현재 Login 한 사람의 ID
+                String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if(likeList.containsKey(user_id)){
+                    imgLike.setImageResource(R.drawable.ic_favorite);
+                }else{
+                    imgLike.setImageResource(R.drawable.ic_favorite_border);
                 }
             }
         }
@@ -191,10 +191,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         void setViewPager(List<Photo> photoList) {
             postPhotoAdapter = new PostPhotoAdapter(context, photoList);
             viewPager.setAdapter(postPhotoAdapter);
-
             if (photoList.size() == 1) {
                 indicator.setVisibility(View.GONE);
             } else {
+                indicator.setVisibility(View.VISIBLE);
                 indicator.setNumberOfItems(photoList.size());
                 viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
@@ -224,18 +224,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 case R.id.imgOption:
                     break;
                 case R.id.imgLike:
-                    Toast.makeText(context, "LIKE 누름", Toast.LENGTH_SHORT).show();
-                    PostDAO.getInstance().onLikeClick(post_id, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    PostDAO.getInstance().onLikeClick(post_id, FirebaseAuth.getInstance().getCurrentUser());
                     break;
                 case R.id.imgComment:
-                    Toast.makeText(context, "Comment 누름", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.imgShare:
+                    Log.e("heepie2", "Clicked");
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("post_id", post_id);
+                    context.startActivity(intent);
                     break;
             }
-
         }
-
-
     }
 }

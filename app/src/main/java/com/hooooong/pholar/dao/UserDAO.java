@@ -8,13 +8,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.hooooong.pholar.model.Comment;
-import com.hooooong.pholar.model.Like;
-import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.model.PostThumbnail;
 import com.hooooong.pholar.model.User;
-import com.hooooong.pholar.util.FirebaseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +102,8 @@ public class UserDAO {
             }
         });
     }
+
+
 
     private void setInnerObject(DataSnapshot dataSnapshot, User item) {
         if (dataSnapshot.hasChild("post_thumbnail")) {
