@@ -18,25 +18,20 @@ import retrofit2.Retrofit;
 
 public class SendNotification {
 
-    public static void sendLikeNotification(Post post, String nickName, String token){
-        Log.e("SendNotification" ,"sendLikeNotification");
-        Log.e("SendNotification" ,"imagePath : " + post.getPhoto().get(0).storage_path);
-        Log.e("SendNotification" ,"nickName : "+nickName);
-        Log.e("SendNotification" ,"token L "+token);
+    public static void sendLikeNotification(Post post, String nickName, String token) {
+        Log.e("SendNotification", "sendLikeNotification");
+        Log.e("SendNotification", "imagePath : " + post.getPhoto().get(0).storage_path);
+        Log.e("SendNotification", "nickName : " + nickName);
+        Log.e("SendNotification", "token L " + token);
 
         // Body 설정 + "\", \"imagePath\" : \"" +
         String json = "{\"to\": \"" + token + "\", " +
-                "\"imagePath\" : \"" + post.getPhoto().get(0).storage_path +"\"" +
-                ", \"nickName\" : \"" + nickName +
+                "\"imagePath\" : \"" + post.getPhoto().get(0).storage_path + "\"" +
+                ", \"nickName\" : \"" + nickName + "\"" +
                 ", \"post_id\" : \"" + post.post_id +
                 "\"}";
 
-        Log.e("SendNotification" ,"json : " + json);
-
-
-
-        // 1. node 서버에서 자체적으로 보내는 경우 text/plain
-        //RequestBody body = RequestBody.create(MediaType.parse("text/plain"), json);
+        Log.e("SendNotification", "json : " + json);
 
         // 2. Firebase Function 에서 보내는 경우 application/json
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
@@ -44,8 +39,6 @@ public class SendNotification {
         // Retrofit 설정
         Retrofit retrofit = new Retrofit
                 .Builder()
-                // 1. Node 서버에서 자체적으로 보내는 경우 Node 서버 IP 와 PortNumber 로 보낸다.
-                //.baseUrl("http://192.168.0.10/8090")
                 // 2. Firebase Function 에서 보내는
                 .baseUrl("https://us-central1-pholar-f5bf3.cloudfunctions.net/")
                 .build();
@@ -57,22 +50,14 @@ public class SendNotification {
         remote.enqueue(new Callback<ResponseBody>() {
                            @Override
                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                               if(response.isSuccessful()){
-                                   Log.e("SendNotification" , "sendLikeNotification 성공");
-                                   /*
-                                   ResponseBody data = response.body();
-
-                                   try {
-                                       Toast.makeText(StorageActivity.this, data.string(), Toast.LENGTH_SHORT).show();
-                                   } catch (IOException e) {
-                                       e.printStackTrace();
-                                   }*/
+                               if (response.isSuccessful()) {
+                                   Log.e("SendNotification", "sendLikeNotification 성공");
                                }
                            }
 
                            @Override
                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                               Log.e("Retro",t.getMessage());
+                               Log.e("Retro", t.getMessage());
                            }
                        }
         );
