@@ -228,6 +228,11 @@ public class PostDAO {
         });
     }
 
+    public void updatePost(Post info) {
+        postRef.child(info.post_id).setValue(info);
+
+    }
+
     private void setInnerObject(DataSnapshot dataSnapshot, Post item) {
         if (dataSnapshot.hasChild("photo")) {
             DataSnapshot photoSnapshot = dataSnapshot.child("photo");
