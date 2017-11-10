@@ -48,8 +48,10 @@ public class SigninActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         // initView();
+
         sp = getSharedPreferences("sp", MODE_PRIVATE);
         editor = sp.edit();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -68,6 +70,7 @@ public class SigninActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fUser = mAuth.getCurrentUser();
         SignInButton button = findViewById(R.id.btnLoginGoogle);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +105,7 @@ public class SigninActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -128,6 +132,7 @@ public class SigninActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(SigninActivity.this, "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+
                             fUser = mAuth.getCurrentUser();
                             if (fUser != null) {
                                 checkUser(fUser);
@@ -136,6 +141,7 @@ public class SigninActivity extends AppCompatActivity {
 //                            Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
                             // For Test
                             Intent intent = new Intent(SigninActivity.this, DetailActivity.class);
+
                             SigninActivity.this.startActivity(intent);
                             finish();
                         }
@@ -144,6 +150,7 @@ public class SigninActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+
                     }
                 });
     }
@@ -179,3 +186,4 @@ public class SigninActivity extends AppCompatActivity {
         });
     }
 }
+

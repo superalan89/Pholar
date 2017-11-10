@@ -1,4 +1,4 @@
-package com.hooooong.pholar.view.home;
+package com.hooooong.pholar.view.mypage;
 
 
 import android.os.Bundle;
@@ -18,7 +18,6 @@ public class MypageFragment extends Fragment {
     public MypageFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

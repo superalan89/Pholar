@@ -13,15 +13,16 @@ import java.util.List;
 
 /**
  * Created by Heepie on 2017. 11. 7..
+ * 새로운 글을 보여주는 Viewpager의 Adapter
  */
 
-public class RecommendFriendViewPagerAdapter extends PagerAdapter {
+public class NewPostAdapter extends PagerAdapter {
     private final String TAG = getClass().getSimpleName();
 
-    Context context;
-    List<String> data;
+    private Context context;
+    private List<String> data;
 
-    public RecommendFriendViewPagerAdapter(Context context, List<String> data) {
+    public NewPostAdapter(Context context, List<String> data) {
         this.context = context;
         this.data = data;
     }
@@ -29,10 +30,13 @@ public class RecommendFriendViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(context)
-                                  .inflate(R.layout.each_recommend_friend, null);
+                                  .inflate(R.layout.each_new_write, null);
 
-        TextView textId = view.findViewById(R.id.each_recommend_friend_id);
-        textId.setText(data.get(position));
+        String title = data.get(position);
+
+        TextView textTitle = view.findViewById(R.id.each_new_write_title);
+
+        textTitle.setText(title);
 
         container.addView(view);
 
@@ -53,7 +57,8 @@ public class RecommendFriendViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-
-
+        container.removeView((View)object);
     }
 }
+
+

@@ -12,7 +12,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -27,7 +29,9 @@ import com.hooooong.pholar.view.write.listener.WriteListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Heepie on 2017. 11. 8..
@@ -59,6 +63,15 @@ public class PostDAO {
         storageRef = FirebaseStorage.getInstance().getReference();
     }
 
+    /**
+     * 글 작성
+     * 1차적으로 Storage 에 사진 정보를 넣는다.
+     *
+     * @param listener
+     * @param path
+     * @param uid
+     * @param info
+     */
     public void create(final WriteListener listener, String path, String uid, final Post info) {
         for (int i = 0; i < info.getPhoto().size(); i++) {
             final int j = i;
@@ -73,7 +86,7 @@ public class PostDAO {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            info.getPhoto().get(j).storage_path = taskSnapshot.getDownloadUrl().getPath();
+                            info.getPhoto().get(j).storage_path = taskSnapshot.getDownloadUrl().toString();
                             count++;
                             if(count == info.getPhoto().size()){
                                 uploadDataBase(listener, info);
@@ -92,7 +105,7 @@ public class PostDAO {
     }
 
     /**
-     * 실질적인 POSt 정보들을 Database 에 넣는다.
+     * 실질적인 POST 정보들을 Database 에 넣는다.
      *
      * @param listener
      * @param info
@@ -118,6 +131,43 @@ public class PostDAO {
                 });
     }
 
+    /**
+     * 좋아요 누를 시
+     *
+     * @param post_id
+     * @param user_id
+     */
+    public void onLikeClick(String post_id, final String user_id) {
+        postRef.child(post_id).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Post post = mutableData.getValue(Post.class);
+                if (post == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                if (post.like != null && post.like.containsKey(user_id)) {
+                    // Unstar the post and remove self from stars
+                    post.like.remove(user_id);
+                } else {
+                    Map<String, Boolean> likeMap = new HashMap<>();
+                    likeMap.put(user_id, true);
+                    post.like = likeMap;
+                }
+                // Set value and report transaction success
+                mutableData.setValue(post);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                // Transaction completed
+                Log.e(TAG, "postTransaction:onComplete:" + databaseError);
+            }
+        });
+    }
+
 
     public List<Post> readALL() {
         List<Post> tmp = new ArrayList<>();
@@ -128,20 +178,18 @@ public class PostDAO {
     // 최신글 100개 글을 읽어오는 메소드
     public void read(final ICallback callback) {
         final List<Post> data = new ArrayList<>();
-
         Query getTopNewPost = postRef.limitToFirst(DEFAULT_GET_NEWPOST);
-        getTopNewPost.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        getTopNewPost.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                data.clear();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post item = snapshot.getValue(Post.class);
-
                     setInnerObject(dataSnapshot, item);
-
                     data.add(item);
-                    Log.d(TAG, "read: " + item);
                 }
-
                 Collections.reverse(data);
                 callback.getPostFromFirebaseDB(data);
             }
@@ -204,7 +252,7 @@ public class PostDAO {
             }
 
             item.setComment(list);
-        } else if (dataSnapshot.hasChild("like")) {
+        }/* else if (dataSnapshot.hasChild("like")) {
             DataSnapshot photoSnapshot = dataSnapshot.child("like");
 
             List<Like> list = new ArrayList<>();
@@ -216,7 +264,7 @@ public class PostDAO {
             }
 
             item.setLike(list);
-        }
+        }*/
     }
 
     // Firebase에서 Read한 결과를 리턴해주는 Interface

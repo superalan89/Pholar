@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
 
     android:background="@color/colorWhite"
-    tools:context="com.hooooong.pholar.view.home.MypageFragment">
-    <!--android:fitsSystemWindows="true"-->
+    tools:context="com.hooooong.pholar.view.mypage.MypageFragment">
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="192dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="192dp">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
