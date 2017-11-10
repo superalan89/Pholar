@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,7 +18,6 @@ import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity implements PostDAO.ICallback, UserDAO.ICallback {
@@ -31,7 +31,9 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
     private TextView detailTime;
     private TextView detailContent;
 
-    private RelativeLayout detailPicLayout;
+    private LinearLayout detailPicLayout;
+    private RelativeLayout progressBarLayout;
+    private TextView commentWriterId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,20 +45,25 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
         // 테스트
         post_id = "-KyVcailcSYuomJdjcEU";
 
-
         initView();
         init();
     }
 
     private void init() {
         postDAO = PostDAO.getInstance();
-        //showProgressBar();
+
+//        isShowProgressBar(true);
         postDAO.readByPostId(this, post_id);
 
         userDAO = UserDAO.getInstance();
     }
 
-    private void showProgressBar() {
+    private void isShowProgressBar(boolean isShow) {
+        if (isShow)
+            progressBarLayout.setVisibility(View.VISIBLE);
+        else
+            progressBarLayout.setVisibility(View.GONE);
+
     }
 
 
@@ -87,21 +94,30 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
                 .into(detailProfile);
 
         detailId.setText(nickname);
-
-        for(int i=0; i<photoList.size(); i++){
-            View view = LayoutInflater.from(this).inflate(R.layout.item_write_photo, null);
-            ImageView photoView = view.findViewById(R.id.photoView);
-            Log.e("heepie1", photoList.get(i).getImgPath()+"");
-            Glide.with(this)
-                    .load(photoList.get(i).storage_path)
-                    .into(photoView);
-            detailPicLayout.addView(view);
-        }
-
-
         detailContent.setText(content);
         detailTime.setText(date);
 
+        for (int i = 0; i < photoList.size(); i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.item_read_photo, null);
+            ImageView photoView = view.findViewById(R.id.photoView);
+            TextView textComment = view.findViewById(R.id.textPhotoComment);
+
+            Log.e("heepie1", photoList.get(i).getImgPath() + "");
+
+            Glide.with(this)
+                    .load(photoList.get(i).storage_path)
+                    .into(photoView);
+
+            if (!"".equals(photoList.get(i).photo_explain)) {
+                textComment.setVisibility(View.VISIBLE);
+                textComment.setText(photoList.get(i).photo_explain);
+            }
+
+            detailPicLayout.addView(view);
+        }
+
+        // 현재 사용자의 정보
+        commentWriterId.setText("현재 사용자 Id");
     }
 
     @Override
@@ -113,8 +129,9 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
     public void getSingleUserFromFirebaseDB(User item) {
         user = item;
         Log.e("heepie1", "getSinglePostFromFirebaseDB: " + user.nickname);
-        //hideProgressbar();
+
         setDataToScreen(post, user);
+//        isShowProgressBar(false);
     }
 
     private void initView() {
@@ -123,6 +140,8 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
         detailTime = findViewById(R.id.detail_time);
         detailContent = findViewById(R.id.detail_content);
         detailPicLayout = findViewById(R.id.detail_pic_layout);
+        progressBarLayout = findViewById(R.id.progressBarLayout);
+        commentWriterId = findViewById(R.id.comment_writer_id);
     }
 
 }
