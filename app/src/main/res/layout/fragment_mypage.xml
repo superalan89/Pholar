@@ -52,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_gravity="bottom"
+                app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin">
 
                 <TextView
@@ -61,7 +62,7 @@
                     android:gravity="center"
                     android:text="my_name"
                     android:textColor="@color/colorBlack"
-                    android:textSize="24sp" />
+                    android:textSize="24dp" />
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>

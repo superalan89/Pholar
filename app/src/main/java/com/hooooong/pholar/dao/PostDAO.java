@@ -278,7 +278,7 @@ public class PostDAO {
         postRef.child(post_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String user_id = dataSnapshot.child("user").child("user_id").getValue(String.class);
+                final String user_id = dataSnapshot.child("user").child("user_id").getValue(String.class);
                 userRef.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -288,7 +288,7 @@ public class PostDAO {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                if (!post_id.equals(user.getUid())) {
+                                if (!user_id.equals(user.getUid())) {
                                     SendNotification.sendCommentNotification(post_id, user.getDisplayName(), token);
                                 }
                             }
