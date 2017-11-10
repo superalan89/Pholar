@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -189,7 +190,9 @@ public class PostDAO {
                                    DataSnapshot dataSnapshot) {
                 if(likeStatus){
                     Post post = dataSnapshot.getValue(Post.class);
-                    getUserToken(post, user.getDisplayName());
+                    if(!post.post_id.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        getUserToken(post, user.getDisplayName());
+                    }
                     likeStatus = false;
                 }
                 // Notification 을 날려준다.
@@ -269,7 +272,11 @@ public class PostDAO {
 
     public void updatePost(Post info) {
         postRef.child(info.post_id).setValue(info);
+    }
 
+    public void updateComment(String post_id, int size, Comment comment) {
+//        String commendKey = comment.;
+        postRef.child(post_id).child("comment").child(size+"").setValue(comment);
     }
 
     private void setInnerObject(DataSnapshot dataSnapshot, Post item) {

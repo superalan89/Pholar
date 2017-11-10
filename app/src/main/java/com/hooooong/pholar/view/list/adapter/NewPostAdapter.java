@@ -1,6 +1,7 @@
 package com.hooooong.pholar.view.list.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.hooooong.pholar.R;
 import com.hooooong.pholar.model.Const;
 import com.hooooong.pholar.model.Post;
+import com.hooooong.pholar.view.home.DetailActivity;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class NewPostAdapter extends PagerAdapter {
         TextView textPhotoComment = view.findViewById(R.id.textPhotoComment);
         TextView textPostWriter = view.findViewById(R.id.textPostWriter);
 
-        Post post = data.get(position);
+        final Post post = data.get(position);
 
         Glide.with(context).load( post.getPhoto().get(0).storage_path).centerCrop().into(imgNewPhoto);
 
@@ -49,6 +51,17 @@ public class NewPostAdapter extends PagerAdapter {
             textPhotoComment.setText(post.user.nickname+" 님의 사진");
         }
         textPostWriter.setText(post.user.nickname);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("post_id",post.post_id);
+                context.startActivity(intent);
+            }
+        });
+
+
         container.addView(view);
         return view;
     }

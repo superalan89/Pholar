@@ -5,17 +5,35 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/icon_home"
-        android:title="" />
+        android:title=""
+        android:color="@color/colorWhite"
+        android:state_pressed="true"
+        android:state_checked="true"
+        />
     <item
         android:id="@+id/navigation_write"
         android:icon="@drawable/icon_post"
-        android:title="" />
+        android:title=""
+        android:iconTint="@color/colorWhite"
+        android:state_pressed="true"
+        android:state_checked="false"
+        />
     <item
         android:id="@+id/navigation_notification"
         android:icon="@drawable/icon_notify"
-        android:title="" />
+        android:title=""
+        android:iconTint="@color/colorWhite"
+        android:state_pressed="true"
+        android:state_checked="false"
+        />
     <item
         android:id="@+id/navigation_mypage"
         android:icon="@drawable/icon_mypage"
-        android:title="" />
+        android:title=""
+        android:iconTint="@color/colorWhite"
+        android:state_pressed="true"
+        android:state_checked="false"
+        />
+
+
 </menu>
