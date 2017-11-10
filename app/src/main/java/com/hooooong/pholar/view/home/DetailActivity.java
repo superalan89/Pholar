@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.hooooong.pholar.dao.PostDAO;
 import com.hooooong.pholar.model.Comment;
 import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
+import com.hooooong.pholar.util.DateUtil;
 import com.hooooong.pholar.view.comment.CommentActivity;
 
 import java.util.ArrayList;
@@ -129,14 +131,13 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
         String nickname = post.user.nickname;
         String profile_path = post.user.profile_path;
 
-
         Glide.with(this)
                 .load(profile_path)
                 .into(detailProfile);
 
         detailId.setText(nickname);
         detailContent.setText(content);
-        detailTime.setText(date);
+        detailTime.setText(DateUtil.calculateTime(date));
 
 //        Log.e("heepie3", post.comment.size() + "  " + post.like.size());
 
@@ -160,7 +161,6 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
             }
         }
 
-
         setPhotoToView(photoList);
     }
 
@@ -170,24 +170,24 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
                 View view = LayoutInflater.from(this).inflate(R.layout.item_read_photo, null);
                 ImageView photoView = view.findViewById(R.id.photoView);
                 TextView textComment = view.findViewById(R.id.textPhotoComment);
-
-                Log.e("heepie1", photoList.get(i).getImgPath() + "");
-
                 Glide.with(this)
                         .load(photoList.get(i).storage_path)
                         .into(photoView);
-
                 if (!"".equals(photoList.get(i).photo_explain)) {
                     textComment.setVisibility(View.VISIBLE);
                     textComment.setText(photoList.get(i).photo_explain);
                 }
-
                 detailPicLayout.addView(view);
             }
         }
     }
 
     private void initView() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         detailProfile = findViewById(R.id.detail_profile);
         detailId = findViewById(R.id.detail_id);
         detailTime = findViewById(R.id.detail_time);
@@ -203,6 +203,19 @@ public class DetailActivity extends AppCompatActivity implements PostDAO.ICallba
         textCommentCount = findViewById(R.id.detail_textCommentCount);
         imgLike = (ImageView) findViewById(R.id.imgLike);
     }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void goCommentActivity(View view) {
         goComment();

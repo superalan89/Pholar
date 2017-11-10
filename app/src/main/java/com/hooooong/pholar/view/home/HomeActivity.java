@@ -83,12 +83,6 @@ public class HomeActivity extends AppCompatActivity {
                     Intent intent = new Intent(HomeActivity.this, GalleryActivity.class);
                     startActivity(intent);
                     return true;
-                case R.id.navigation_notification:
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.frameLayout, new NotiFragment())
-                            .commit();
-                    return true;
                 case R.id.navigation_mypage:
                     getSupportFragmentManager()
                             .beginTransaction()
