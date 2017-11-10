@@ -23,22 +23,26 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/imageButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_notification" />
-
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/signout_btn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="right"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_notification" />
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/sign_out" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="로그아웃"
+                    android:textColor="?attr/colorError" />
             </LinearLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -70,6 +74,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <TextView
+        android:id="@+id/posting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
