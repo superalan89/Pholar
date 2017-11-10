@@ -20,6 +20,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.hooooong.pholar.model.Comment;
+import com.hooooong.pholar.model.Like;
 import com.hooooong.pholar.model.Photo;
 import com.hooooong.pholar.model.Post;
 import com.hooooong.pholar.util.DateUtil;
@@ -201,7 +202,7 @@ public class PostDAO {
     }
 
     // 글 ID를 통해 글 읽어오는 메소드
-    /*public void readByPostId(final ICallback callback, String post_id) {
+    public void readByPostId(final ICallback callback, String post_id) {
 
         Query getSinglePost = postRef.child(post_id);
 
@@ -225,7 +226,7 @@ public class PostDAO {
 
             }
         });
-    }*/
+    }
 
     private void setInnerObject(DataSnapshot dataSnapshot, Post item) {
         if (dataSnapshot.hasChild("photo")) {
