@@ -6,10 +6,10 @@
 배워보고 싶고, 사용해보고 싶은 기능들을 위주로 구현하였습니다.</br>
 
 ## 요약
-![table]()
+![table](https://github.com/Heepie/Pholar/blob/master/img/table.png)
 
 ## 스크린샷
-![screenshot1]()
-![screenshot2]()
-![screenshot3]()
-![screenshot4]()
+![screenshot1](https://github.com/Heepie/Pholar/blob/master/img/screen1.PNG)
+![screenshot2](https://github.com/Heepie/Pholar/blob/master/img/screen2.PNG)
+![screenshot3](https://github.com/Heepie/Pholar/blob/master/img/screen3.PNG)
+![screenshot4](https://github.com/Heepie/Pholar/blob/master/img/screen4.PNG)
